@@ -1,0 +1,1 @@
+export { Fertilizer } from "./Fertilizer";

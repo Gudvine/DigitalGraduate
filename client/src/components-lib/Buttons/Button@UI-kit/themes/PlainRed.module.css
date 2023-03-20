@@ -1,0 +1,25 @@
+.button {
+    color: var(--color-red-primary);
+
+    border: 1px solid transparent;
+
+    background-color: transparent;
+}
+
+.button:hover {
+    color: #fff;
+
+    background-color: var(--color-red-primary);
+}
+
+.button:active {
+    background-color: var(--color-red-darker);
+}
+
+.button-active {
+    background-color: var(--color-blue-sky);
+}
+
+.button-active:hover {
+    background-color: var(--color-blue-sky);
+}

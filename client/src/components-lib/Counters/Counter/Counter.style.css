@@ -1,0 +1,21 @@
+.counter-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    gap: 0 5px;
+    align-items: center;
+}
+
+.text {
+    font-weight: normal;
+    font-size: 14px;
+    font-style: normal;
+    line-height: 1.2;
+}
+
+.counter-title {
+    color: var(--color-grey-dark);
+}
+
+.counter {
+    color: #000;
+}

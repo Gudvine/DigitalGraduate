@@ -1,0 +1,1 @@
+export { departments, actions } from "./Departments.slice";

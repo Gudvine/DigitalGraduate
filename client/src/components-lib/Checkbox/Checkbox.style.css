@@ -1,0 +1,66 @@
+.container {
+    grid-auto-columns: 50px;
+    grid-auto-flow: column;
+    justify-content: start;
+
+    user-select: none;
+}
+
+.checkbox-input {
+    display: none;
+}
+
+.checkbox {
+    position: relative;
+    top: -1px;
+
+    display: inline-block;
+
+    width: 14px;
+    height: 14px;
+    margin: -1px 0 0 0;
+
+    vertical-align: middle;
+
+    border-radius: 2px;
+
+    cursor: pointer;
+}
+
+.checkbox-disabled {
+    border: 1px solid var(--color-grey-primary);
+
+    background: var(--color-grey-dark);
+
+    cursor: auto;
+}
+
+.checkbox-disabled:hover {
+    border: 1px solid var(--color-grey-primary);
+
+    cursor: auto;
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: none;
+
+    font-size: 12px;
+
+    transform: translate(-50%, -50%);
+}
+
+.icon-checked {
+    display: block;
+}
+
+.text {
+    margin-top: -1px;
+    margin-left: 9px;
+
+    font-size: 14px;
+    font-family: "Segoe UI", sans-serif;
+}

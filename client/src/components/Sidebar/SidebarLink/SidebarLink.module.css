@@ -1,0 +1,44 @@
+.container {
+    margin-bottom: 10px;
+
+}
+
+.icon {
+    display: inline;
+    margin-right: 11px;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    height: 45px;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.link:hover svg path {
+    fill: #23273A;
+}
+
+.link:hover {
+    color: #23273A;
+    background: radial-gradient(133.33% 2508.35% at -4.59% -10%, #32E6FF 0%, rgba(0, 255, 209, 0.81) 100%), #43E8FF;
+    transition: all 0.3s;
+}
+
+.active {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    height: 45px;
+    color: #23273A;
+    text-decoration: none;
+    border-radius: 10px;
+    background: radial-gradient(133.33% 2508.35% at -4.59% -10%, #32E6FF 0%, rgba(0, 255, 209, 0.81) 100%), #43E8FF;
+}
+
+.active svg path {
+    fill: #23273A;
+}

@@ -1,0 +1,30 @@
+.container {
+
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 710px;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons {
+    width: 83px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.button {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}

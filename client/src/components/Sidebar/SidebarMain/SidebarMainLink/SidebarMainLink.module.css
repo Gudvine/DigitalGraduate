@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.icon {
+    display: inline;
+    margin-right: 11px;
+}
+
+.link {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.link:hover svg path {
+    fill: #43E8FF;
+}
+
+.link:hover {
+    color: #43E8FF;
+}
+
+.active {
+    color: #43E8FF;
+    text-decoration: none;
+}
+
+.active svg path {
+    fill: #43E8FF;
+}

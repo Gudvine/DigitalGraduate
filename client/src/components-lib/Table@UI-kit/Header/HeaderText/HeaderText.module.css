@@ -1,0 +1,15 @@
+.headerItemText {
+  color: var(--color-grey-darker);
+  font-weight: normal;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  overflow: hidden;
+}
+
+.headerItemTextActive {
+  font-weight: bold;
+}
