@@ -1,0 +1,33 @@
+.container {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 10px 14px;
+  justify-items: end;
+}
+
+.letters {
+  position: relative;
+
+  width: 10px;
+  height: 20px;
+}
+
+.letter {
+  position: absolute;
+  right: 0;
+
+  width: 10px;
+  height: 10px;
+
+  color: var(--color-grey-darker);
+  font-size: 10px;
+}
+
+.letterUpper {
+  top: 0;
+}
+
+.letterBottom {
+  bottom: 0;
+}

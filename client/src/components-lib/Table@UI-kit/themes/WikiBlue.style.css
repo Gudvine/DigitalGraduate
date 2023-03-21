@@ -1,0 +1,38 @@
+.table {
+    width: calc(100% - 16px);
+    margin: 0 8px;
+}
+
+.table-header {
+    width: calc(100% - 16px);
+    margin: 5px 8px 5px 8px;
+}
+
+.header-row {
+    border-bottom: 1px solid var(--color-wiki-blue);
+}
+
+.table-row {
+    border-top: 1px dashed var(--color-grey-primary);
+}
+
+.table-row:nth-child(2n) {
+    background-color: var(--color-wiki-blue-sky);
+}
+
+.table-row:last-child {
+    border-bottom: 1px dashed var(--color-grey-primary);
+}
+
+.table-row:hover {
+    background-color: var(--color-blue-sky);
+}
+
+.table-row-active,
+.table-row-active:nth-child(2n) {
+    background-color: var(--color-yellow-light);
+}
+
+.table-row-active:hover {
+    background-color: var(--color-yellow-light);
+}

@@ -1,0 +1,23 @@
+.icon-controller svg > path,
+.icon-controller:hover svg > path,
+.icon-controller:active svg > path {
+    fill: var(--color-grey-primary);
+}
+
+.icon-controller svg > g > path,
+.icon-controller:hover svg > g > path,
+.icon-controller:active svg > g > path {
+    stroke: var(--color-grey-primary);
+}
+
+.icon-controller svg > rect,
+.icon-controller:hover svg > rect,
+.icon-controller:active svg > rect {
+    fill: var(--color-grey-primary);
+}
+
+.icon-controller svg > circle,
+.icon-controller:hover svg > circle,
+.icon-controller:active svg > circle {
+    stroke: var(--color-grey-primary);
+}
