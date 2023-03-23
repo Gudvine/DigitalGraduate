@@ -1,5 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Useful variables
+var connectionStringForTests = builder.Configuration.GetConnectionString("TestDbConnection");
+var connectionStringTestIdentity = builder.Configuration.GetConnectionString("TestIdentity");
+
 // Add services to the container.
 
 builder.Services.AddControllers();
