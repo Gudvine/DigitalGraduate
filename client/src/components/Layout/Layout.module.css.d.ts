@@ -1,7 +1,14 @@
 declare namespace LayoutStyleCssNamespace {
     export interface ILayoutStyleCss {
         container: string;
-        outlet: string;
+        title: string;
+        functionalButtons: string;
+        account: string;
+        sidebar: string;
+        content: string;
+        link: string;
+        linkActive: string;
+        pageContent: string;
     }
 }
 

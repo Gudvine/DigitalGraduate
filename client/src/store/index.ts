@@ -1,10 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import {departments} from "./Departments";
 
-export const rootReducer = combineReducers({
-    departments,
-});
+export const rootReducer = combineReducers({});
 
 export const store = configureStore({
     reducer: rootReducer,
