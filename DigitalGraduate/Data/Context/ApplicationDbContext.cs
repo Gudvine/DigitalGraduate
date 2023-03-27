@@ -9,5 +9,7 @@ namespace DigitalGraduate.Data.Context
             : base(options) { }
 
         public virtual DbSet<TrainingArea> TrainingAreas { get; set; }
+        public virtual DbSet<ScientificSpeciality> ScientificSpecialities { get; set; }
+        public virtual DbSet<GraduateProgram> GraduatePrograms { get; set; }
     }
 }
