@@ -16,9 +16,7 @@ export interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
 export const Button: React.FC<ButtonProps> = (props) => {
   const { isActive, theme, mixClassName, ...rest } = props;
   const currentTheme = theme ?? "primary-blue";
-  // console.log("currentTheme: ", currentTheme);
   const themeStyles = themes[currentTheme];
-  console.log("themeStyles: ", themeStyles);
 
   const withOnlyIcon = React.Children.toArray(props.children).every(
     (c) => typeof c !== "string"

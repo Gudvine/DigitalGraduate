@@ -14,7 +14,6 @@ export const useImage = (
     // @ts-ignore
     reader.readAsDataURL(e.currentTarget.files[0]);
     reader.onload = () => {
-      console.log("image: ", String(reader.result));
       changeImage(String(reader.result));
     };
   };
