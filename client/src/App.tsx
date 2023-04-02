@@ -14,6 +14,7 @@ function App() {
           <Routes>
               <Route path={"/"} element={<Layout />}>
                   <Route index element={<Account />} />
+                  {/*<Route path={"register"} element={<RegistrationFormPage />} />*/}
                   <Route path={"aboutpregraguateactivites"} element={<AboutPregraguateActivites />} />
                   <Route path={"enrollmentandgraduation"} element={<EnrollmentAndGraduation />} />
                   <Route path={"scientificadviser"} element={<ScientificAdviser />} />
