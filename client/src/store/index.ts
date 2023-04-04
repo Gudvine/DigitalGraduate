@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
+import {aspirant} from "./Aspirant";
 
-export const rootReducer = combineReducers({});
+export const rootReducer = combineReducers({
+    aspirant,
+});
 
 export const store = configureStore({
     reducer: rootReducer,

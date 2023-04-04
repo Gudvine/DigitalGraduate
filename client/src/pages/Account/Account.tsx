@@ -1,9 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "./Account.module.css";
 import {NavLink} from "react-router-dom";
 import {ImageLoader} from "../../components-lib/ImageLoader";
+import {useSelector} from "react-redux";
+import {selector} from "./@services/getter";
+import {loadAspirantData} from "./@services/command";
 
 export const Account: React.FC = () => {
+    const state = useSelector(selector);
+
+    useEffect(   () => {
+        (async function anyFunc(){
+            await loadAspirantData()
+        })();
+    }, []);
+
     return (
         <div className={styles.container}>
             <div className={styles.sidebar}>
@@ -25,9 +36,19 @@ export const Account: React.FC = () => {
                         fontSize: "20px",
                         fontWeight: "700",
                     }}>
-                        <p>{"Иванов"}</p>
-                        <p>{"Иван"}</p>
-                        <p>{"Иванович"}</p>
+                        <p>{state.secondName}</p>
+                        <p>{state.firstName}</p>
+                        <p>{state.patronymic}</p>
+                        <p>{state.dateOfBirth}</p>
+                        <p>{state.phoneNumber}</p>
+                        <p>{state.education}</p>
+                        <p>{state.institute?.name}</p>
+                        <p>{state.department?.name}</p>
+                        <p>{state.scientificSpeciality}</p>
+                        <p>{state.formOfStudy}</p>
+                        <p>{state.budgetForm}</p>
+                        <p>{state.studyStatus}</p>
+                        <input type="file"/>
                     </div>
                 </div>
                 <NavLink className={styles.link} to={"/aboutpregraguateactivites"}>
