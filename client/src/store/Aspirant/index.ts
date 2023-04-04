@@ -1,0 +1,1 @@
+export { aspirant, actions } from "./Aspirant.slice";
