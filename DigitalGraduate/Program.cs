@@ -1,8 +1,19 @@
+using DigitalGraduate.Data.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Useful variables
+var testDbConnString = builder.Configuration.GetConnectionString("TestDbConnection");
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    options.UseMySql(testDbConnString, MySqlServerVersion.AutoDetect(testDbConnString)).EnableSensitiveDataLogging();
+}, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
