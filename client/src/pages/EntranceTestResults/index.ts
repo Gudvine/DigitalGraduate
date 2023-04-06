@@ -1,0 +1,1 @@
+export { EntranceTestResults } from "./EntranceTestResults";

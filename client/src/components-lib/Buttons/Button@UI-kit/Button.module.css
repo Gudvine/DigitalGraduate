@@ -19,12 +19,6 @@
   user-select: none;
 
   transition: all 0.15s ease;
-
-  color: #fff;
-
-  border: 1px solid var(--color-blue-primary);
-
-  background-color: var(--color-blue-primary);
 }
 
 .buttonWithIcon {

@@ -16,10 +16,10 @@
     background-color: var(--color-red-darker);
 }
 
-.button-active {
+.buttonActive {
     background-color: var(--color-blue-sky);
 }
 
-.button-active:hover {
+.buttonActive:hover {
     background-color: var(--color-blue-sky);
 }

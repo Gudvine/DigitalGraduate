@@ -28,7 +28,6 @@ export const Button: React.FC<ButtonProps> = (props) => {
 
   return (
     <button
-      {...rest}
       style={{ ...inlineComputedStyles, ...rest.style }}
       className={styler(
         styles.button,

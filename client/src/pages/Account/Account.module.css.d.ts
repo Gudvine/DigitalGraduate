@@ -1,5 +1,5 @@
-declare namespace LayoutStyleCssNamespace {
-    export interface ILayoutStyleCss {
+declare namespace AccountStyleCssNamespace {
+    export interface IAccountStyleCss {
         container: string;
         title: string;
         functionalButtons: string;
@@ -12,6 +12,6 @@ declare namespace LayoutStyleCssNamespace {
     }
 }
 
-declare const LayoutStyleCssModule: LayoutStyleCssNamespace.ILayoutStyleCss;
+declare const AccountStyleCssModule: AccountStyleCssNamespace.IAccountStyleCss;
 
-export = LayoutStyleCssModule;
+export = AccountStyleCssModule;
