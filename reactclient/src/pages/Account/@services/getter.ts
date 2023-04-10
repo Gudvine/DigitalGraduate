@@ -14,6 +14,4 @@ export const selector = (s: AppState) => ({
     formOfStudy: s.aspirant.aspirant.formOfStudy,
     budgetForm: s.aspirant.aspirant.budgetForm,
     studyStatus: s.aspirant.aspirant.studyStatus,
-
-
 });
