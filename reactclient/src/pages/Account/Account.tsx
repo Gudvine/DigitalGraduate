@@ -42,8 +42,8 @@ export const Account: React.FC = () => {
                         <p>{state.dateOfBirth}</p>
                         <p>{state.phoneNumber}</p>
                         <p>{state.education}</p>
-                        <p>{state.institute?.name}</p>
-                        <p>{state.department?.name}</p>
+                        {/* <p>{state.institute?.name}</p>
+                        <p>{state.department?.name}</p> */}
                         <p>{state.scientificSpeciality}</p>
                         <p>{state.formOfStudy}</p>
                         <p>{state.budgetForm}</p>

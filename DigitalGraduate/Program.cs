@@ -9,6 +9,13 @@ var testDbConnString = builder.Configuration.GetConnectionString("TestDbConnecti
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAspirantReactTestApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000").AllowAnyMethod();
+    });
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
@@ -25,6 +32,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors("AllowAspirantReactTestApp");
 }
 
 app.UseHttpsRedirection();
