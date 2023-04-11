@@ -39,15 +39,15 @@ export const Account: React.FC = () => {
                         <p>{state.secondName}</p>
                         <p>{state.firstName}</p>
                         <p>{state.patronymic}</p>
-                        <p>{state.dateOfBirth}</p>
+                        <p>{state.department?.name}</p>
                         <p>{state.phoneNumber}</p>
+                        {/* <p>{state.dateOfBirth}</p>
                         <p>{state.education}</p>
-                        {/* <p>{state.institute?.name}</p>
-                        <p>{state.department?.name}</p> */}
+                        <p>{state.institute?.name}</p>
                         <p>{state.scientificSpeciality}</p>
                         <p>{state.formOfStudy}</p>
                         <p>{state.budgetForm}</p>
-                        <p>{state.studyStatus}</p>
+                        <p>{state.studyStatus}</p> */}
                         <input type="file"/>
                     </div>
                 </div>
