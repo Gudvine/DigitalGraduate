@@ -1,0 +1,33 @@
+.container {
+
+}
+
+.publication {
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+}
+
+.titleBlock {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.title {
+    margin-right: 10px;
+    font-weight: 700;
+}
+
+.title span {
+    font-weight: 400;
+}
+
+.info {
+
+}
+
+.button {
+}

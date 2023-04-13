@@ -1,0 +1,1 @@
+export { ScientificPublications } from "./ScientificPublications";

@@ -1,0 +1,1 @@
+export { GrantsParticipation } from "./GrantsParticipation";
