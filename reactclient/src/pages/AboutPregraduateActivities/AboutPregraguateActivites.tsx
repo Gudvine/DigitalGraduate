@@ -3,7 +3,7 @@ import React from "react";
 export const AboutPregraguateActivites: React.FC = () => {
     return (
         <div>
-            {"AboutPregraguateActivites"}
+            {"Информация о доаспирантской деятельности"}
         </div>
     );
 }

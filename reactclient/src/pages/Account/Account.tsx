@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import styles from "./Account.module.css";
-import {NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import {ImageLoader} from "../../components-lib/ImageLoader";
 import {useSelector} from "react-redux";
 import {selector} from "./@services/getter";
@@ -39,30 +39,54 @@ export const Account: React.FC = () => {
                         <p>{state.secondName}</p>
                         <p>{state.firstName}</p>
                         <p>{state.patronymic}</p>
-                        <p>{state.department?.name}</p>
+                        <p>{state.dateOfBirth}</p>
                         <p>{state.phoneNumber}</p>
-                        {/* <p>{state.dateOfBirth}</p>
                         <p>{state.education}</p>
                         <p>{state.institute?.name}</p>
+                        <p>{state.department?.name}</p>
                         <p>{state.scientificSpeciality}</p>
                         <p>{state.formOfStudy}</p>
                         <p>{state.budgetForm}</p>
-                        <p>{state.studyStatus}</p> */}
+                        <p>{state.studyStatus}</p>
                         <input type="file"/>
                     </div>
                 </div>
-                <NavLink className={styles.link} to={"/aboutpregraguateactivites"}>
+                <Link className={styles.link} to={"/aboutpregraguateactivites"}>
                     {"Информация о доаспирантской деятельности"}
-                </NavLink>
-                <NavLink className={styles.link} to={"/enrollmentandgraduation"}>
+                </Link>
+                <Link className={styles.link} to={"/enrollmentandgraduation"}>
                     {"Зачисление-выпуск"}
-                </NavLink>
-                <NavLink className={styles.link} to={"/scientificadviser"}>
+                </Link>
+                <Link className={styles.link} to={"/scientificadviser"}>
                     {"Руководитель"}
-                </NavLink>
-                <NavLink className={styles.link} to={"/entrancetestresults"}>
+                </Link>
+                <Link className={styles.link} to={"/entrancetestresults"}>
                     {"Результаты вступительных испытаний"}
-                </NavLink>
+                </Link>
+                <Link className={styles.link} to={"/сertification"}>
+                    {"Аттестация"}
+                </Link>
+                <Link className={styles.link} to={"/scientificpublications"}>
+                    {"Научные публикации"}
+                </Link>
+                <Link className={styles.link} to={"/scientificconferences"}>
+                    {"Участие в научных конференциях"}
+                </Link>
+                <Link className={styles.link} to={"/scientificcompetitions"}>
+                    {"Участие в научных конкурсах (за стипендию)"}
+                </Link>
+                <Link className={styles.link} to={"/patents"}>
+                    {"Патенты"}
+                </Link>
+                <Link className={styles.link} to={"/certificateofstateprogramregistration"}>
+                    {"Свидетельство о государственной регистрации программы/баз данных"}
+                </Link>
+                <Link className={styles.link} to={"/tuitionpayment"}>
+                    {"Оплата обучения"}
+                </Link>
+                <Link className={styles.link} to={"/grantsparticipation"}>
+                    {"Участие в грантах"}
+                </Link>
             </div>
         </div>
     );
