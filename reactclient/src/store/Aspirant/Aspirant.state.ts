@@ -1,36 +1,8 @@
-//TODO: добавить enums
-
-export type DepartmentType = {
-    id: number,
-    name?: string
-    cypher?: string;
-}
-
-export type InstituteType = {
-    id: number,
-    name?: string
-    cypher?: string;
-}
-
-export type AspirantType = {
-    id: number;
-    firstName: string;
-    secondName: string;
-    gender: string;
-    dateOfBirth: string;
-    phoneNumber: string;
-    scientificSpeciality: string;
-    formOfStudy: string;
-    budgetForm: string;
-    studyStatus: string;
-    education: string;
-    patronymic?: string;
-    institute?: InstituteType;
-    department?: DepartmentType;
-}
+import {AspirantType, PublicationItem} from "./Aspirant.types";
 
 export type AspirantState = {
     aspirant: AspirantType;
+    publications: PublicationItem[];
 };
 
 export const initState: AspirantState = {
@@ -57,5 +29,6 @@ export const initState: AspirantState = {
             name: "",
             cypher: "",
         },
-    }
+    },
+    publications: [],
 };

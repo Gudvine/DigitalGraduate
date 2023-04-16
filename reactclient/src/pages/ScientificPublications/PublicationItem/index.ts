@@ -1,0 +1,1 @@
+export { PublicationItem } from "./PublicationItem";
