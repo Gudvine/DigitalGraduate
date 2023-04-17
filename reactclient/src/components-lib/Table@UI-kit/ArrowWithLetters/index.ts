@@ -1,1 +1,0 @@
-export { ArrowWithLetters } from "./ArrowWithLetters";

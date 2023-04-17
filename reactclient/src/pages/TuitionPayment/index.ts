@@ -1,1 +1,0 @@
-export { TuitionPayment } from "./TuitionPayment";
