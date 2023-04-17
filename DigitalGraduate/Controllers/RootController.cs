@@ -33,7 +33,7 @@ namespace DigitalGraduate.Controllers
         public ActionResult<GraduateStudent> GetStudentProfile(int id)
         {
             var student = _context.GraduateStudents.Include(x => x.Department).Where(x => x.Id == id).FirstOrDefault();
-
+            //
             if (student is not null) 
             {
                 return Ok(student);
