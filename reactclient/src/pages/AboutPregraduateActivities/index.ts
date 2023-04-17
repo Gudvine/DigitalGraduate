@@ -1,1 +1,0 @@
-export { AboutPregraguateActivites } from "./AboutPregraguateActivites";

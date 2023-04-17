@@ -1,1 +1,0 @@
-export { ScientificCompetitions } from "./ScientificCompetitions";
