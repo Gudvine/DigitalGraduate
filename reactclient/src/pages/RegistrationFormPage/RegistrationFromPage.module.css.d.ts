@@ -1,6 +1,7 @@
 declare namespace RegistrationFromPageStyleCssNamespace {
     export interface IRegistrationFromPageStyleCss {
         container: string;
+        form: string;
     }
 }
 

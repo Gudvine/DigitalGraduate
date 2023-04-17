@@ -15,6 +15,7 @@ import {Patents} from "./pages/Patents";
 import {CertificateOfStateProgramRegistration} from "./pages/CertificateOfStateProgramRegistration";
 import {TuitionPayment} from "./pages/TuitionPayment";
 import {GrantsParticipation} from "./pages/GrantsParticipation";
+import {RegistrationFormPage} from "./pages/RegistrationFormPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Routes>
               <Route path={"/"} element={<Layout />}>
                   <Route index element={<Account />} />
+                  <Route path={"registration"} element={<RegistrationFormPage />} />
                   <Route path={"aboutpregraguateactivites"} element={<AboutPregraguateActivites />} />
                   <Route path={"enrollmentandgraduation"} element={<EnrollmentAndGraduation />} />
                   <Route path={"scientificadviser"} element={<ScientificAdviser />} />
