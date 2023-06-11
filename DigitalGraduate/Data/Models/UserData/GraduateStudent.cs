@@ -1,5 +1,6 @@
 ﻿using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace DigitalGraduate.Data.Models.UserData
 {
@@ -13,6 +14,7 @@ namespace DigitalGraduate.Data.Models.UserData
         public string? LastName { get; set; }
         public string? Patronymic { get; set; } // Отчество
         public Gender Gender { get; set; }
+        [DataType(DataType.DateTime)]
         public DateTime DateOfBirth { get; set; }
         // TODO: возможно передалать под отдельный тип
         public string? PassportData { get; set; }
