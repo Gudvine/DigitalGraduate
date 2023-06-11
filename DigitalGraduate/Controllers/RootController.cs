@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DigitalGraduate.Controllers
 {
+    //[Authorize]
     [ApiController]
     [Route("[api]")]
     public class RootController : ControllerBase
@@ -15,6 +16,12 @@ namespace DigitalGraduate.Controllers
         public RootController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        [HttpGet("/getAllGrants")]
+        public ActionResult<List<Grant>> GetAllGrants()
+        {
+            return _context.Grants.ToList();
         }
 
         [HttpGet("/getTrainingAreas")]
@@ -33,15 +40,8 @@ namespace DigitalGraduate.Controllers
         public ActionResult<GraduateStudent> GetStudentProfile(int id)
         {
             var student = _context.GraduateStudents.Include(x => x.Department).Where(x => x.Id == id).FirstOrDefault();
-            //
-            if (student is not null) 
-            {
-                return Ok(student);
-            }
-            else
-            {
-                return NotFound();
-            }
+
+            return student == null ? NotFound() : Ok(student);
         }
     }
 }
