@@ -1,13 +1,22 @@
 ﻿using DigitalGraduate.Data.Context;
 using DigitalGraduate.Data.Models.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Text;
 
 namespace DigitalGraduate.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("auth/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApiUser> _userManager;
@@ -48,7 +57,7 @@ namespace DigitalGraduate.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> LoginUser(LoginModel loginModel)
         {
             if (!ModelState.IsValid)
@@ -56,14 +65,72 @@ namespace DigitalGraduate.Controllers
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            var actionResult = await _signInManager.PasswordSignInAsync(loginModel.UserLogin, loginModel.Password, false, false);
+            var actionResult = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, false, false);
 
             if (!actionResult.Succeeded)
             {
                 return BadRequest();
             }
 
-            return Ok();
+            var user = await _userManager.FindByNameAsync(loginModel.Email);
+
+            var claims = new List<Claim>
+            {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
+                };
+            ClaimsIdentity claimsIdentity =
+            new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
+
+            var now = DateTime.UtcNow;
+
+            var jwt = new JwtSecurityToken(
+            notBefore: now,
+            claims: claimsIdentity.Claims,
+            expires: now.Add(TimeSpan.FromMinutes(30)),
+                    signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes("mysupersecret_secretkey!123")), SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            var response = new
+            {
+                access_token = encodedJwt,
+                username = claimsIdentity.Name
+            };
+
+            return Ok(response);
+        }
+
+        [HttpGet("/auth/me")]
+        public async Task<IActionResult> AuthMe()
+        {
+            var claimsUser = HttpContext.User;
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var claims = new List<Claim>
+            {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, User.Identity.Name),
+                };
+            ClaimsIdentity claimsIdentity =
+            new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
+
+            var now = DateTime.UtcNow;
+
+            var jwt = new JwtSecurityToken(
+            notBefore: now,
+            claims: claimsIdentity.Claims,
+            expires: now.Add(TimeSpan.FromMinutes(30)),
+                    signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes("mysupersecret_secretkey!123")), SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            var response = new
+            {
+                access_token = encodedJwt,
+                username = claimsIdentity.Name
+            };
+
+            return Ok(response);
         }
     }
 }
