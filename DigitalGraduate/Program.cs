@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Useful variables
+// Db connections
 var testDbConnString = builder.Configuration.GetConnectionString("TestDbConnection");
 var identityDbConnString = builder.Configuration.GetConnectionString("IdentityDbConnection");
 
@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAspirantReactTestApp", policy =>
     {
-        policy.WithOrigins("http://localhost:3000").AllowAnyMethod();
+        policy.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
     });
 });
 
@@ -72,10 +72,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors("AllowAspirantReactTestApp");
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAspirantReactTestApp");
 
 app.UseAuthentication();
 app.UseAuthorization();
