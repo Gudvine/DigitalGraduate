@@ -19,6 +19,9 @@ namespace DigitalGraduate.Controllers
     [Route("auth/[controller]")]
     public class AccountController : ControllerBase
     {
+        private const string SecretToken = "P8SID3zfe0PG#N!k5LVhtLAGzEPG#N!SI";
+        private static readonly TimeSpan TokenLifetime = TimeSpan.FromHours(5);
+
         private readonly UserManager<ApiUser> _userManager;
         private readonly SignInManager<ApiUser> _signInManager;
         private readonly ApplicationDbContext _appContext;
@@ -51,13 +54,11 @@ namespace DigitalGraduate.Controllers
                 return BadRequest(result.Errors);
             }
 
-            await _signInManager.SignInAsync(newUser, isPersistent: true);
-
             return Ok();
         }
 
         [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpPost("/auth/login")]
         public async Task<IActionResult> LoginUser(LoginModel loginModel)
         {
             if (!ModelState.IsValid)
