@@ -1,5 +1,6 @@
 ﻿using DigitalGraduate.Data.Context;
 using DigitalGraduate.Data.Models.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,16 +20,18 @@ namespace DigitalGraduate.Controllers
         private readonly ApplicationDbContext _appContext;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         private string TokenKey = "";
 
-        public AccountController(UserManager<ApiUser> userManager, SignInManager<ApiUser> signInManager, ApplicationDbContext appContext, IConfiguration configuration, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<ApiUser> userManager, SignInManager<ApiUser> signInManager, ApplicationDbContext appContext, IConfiguration configuration, RoleManager<IdentityRole> roleManager, IHttpContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appContext = appContext;
             _configuration = configuration;
             _roleManager = roleManager;
+            _contextAccessor = contextAccessor;
 
             TokenKey = _configuration["JwtSettings:Key"]!;
         }
@@ -54,6 +57,11 @@ namespace DigitalGraduate.Controllers
                 UserName = model.Login,
                 Email = model.Email
             };
+
+            //if (model.UserRole == "Student")
+            //{
+            //    await _userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.));
+            //}
 
             var result = await _userManager.CreateAsync(newUser, model.Password);
 
@@ -92,16 +100,16 @@ namespace DigitalGraduate.Controllers
 
             if (user is not null)
             {
+                var roles = await _userManager.GetRolesAsync(user);
                 var authClaims = new List<Claim>()
                 {
                     new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email!),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, roles.FirstOrDefault()),
                 };
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(
                     authClaims,
-                    "token",
-                    ClaimsIdentity.DefaultNameClaimType,
-                    ClaimsIdentity.DefaultRoleClaimType);
+                    JwtBearerDefaults.AuthenticationScheme);
 
                 var now = DateTime.UtcNow;
 
@@ -124,6 +132,14 @@ namespace DigitalGraduate.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpGet("/test")]
+        public IActionResult Tes()
+        {
+            var user = HttpContext.User.Identity as ClaimsIdentity;
+
+            return Ok();
         }
 
         [HttpGet("/auth/me")]

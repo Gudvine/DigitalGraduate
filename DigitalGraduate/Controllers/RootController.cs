@@ -2,6 +2,7 @@
 using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.Identity;
 using DigitalGraduate.Data.Models.UserData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ namespace DigitalGraduate.Controllers
         }
 
         // TODO: Тестовый контроллер, потом убрать
+        [Authorize(Roles = "Admin")]
         [HttpPost("/createRole")]
         public async Task<IActionResult> CreateRole(string name)
         {

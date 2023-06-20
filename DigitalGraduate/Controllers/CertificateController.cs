@@ -2,8 +2,11 @@
 using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.Certificates;
 using DigitalGraduate.Data.Models.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace DigitalGraduate.Controllers
 {
@@ -20,9 +23,19 @@ namespace DigitalGraduate.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin,Student,Employee")]
         [HttpPost("/application-certificate")]
         public async Task<IActionResult> CreateCertificateApplication(ApplicationCertificateModel certificateModel)
         {
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            
+            if (currentUser is null)
+            {
+                return Unauthorized();
+            }
+
+            //var student = _userManager.FindByEmailAsync()
+
             CertificateApplication application = new()
             {
                 Count = int.Parse(certificateModel.Count),
@@ -31,6 +44,13 @@ namespace DigitalGraduate.Controllers
             };
 
             return Ok();
+        }
+
+        [Authorize(Roles = "Admin,Employee")]
+        [HttpGet("/certificates")]
+        public async Task<ActionResult<List<CertificateApplication>>> GetAllCertificateApplications()
+        {
+            return await _context.CertificateApplications.Include(x => x.Student).ToListAsync();
         }
     }
 }

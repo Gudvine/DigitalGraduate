@@ -18,5 +18,6 @@ namespace DigitalGraduate.Data.Context
         public virtual DbSet<University> Universities { get; set; }
         public virtual DbSet<UniversityEvent> UniversityEvents { get; set; }
         public virtual DbSet<Grant> Grants { get; set; }
+        public virtual DbSet<CertificateApplication> CertificateApplications { get; set; }
     }
 }
