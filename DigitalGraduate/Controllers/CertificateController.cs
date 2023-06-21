@@ -28,26 +28,56 @@ namespace DigitalGraduate.Controllers
         public async Task<IActionResult> CreateCertificateApplication(ApplicationCertificateModel certificateModel)
         {
             var currentUser = HttpContext.User.Identity as ClaimsIdentity;
-            
+
             if (currentUser is null)
             {
                 return Unauthorized();
             }
 
-            //var student = _userManager.FindByEmailAsync()
+            var userNameClaim = currentUser.Claims.Where(x => x.Type == ClaimsIdentity.DefaultNameClaimType).FirstOrDefault();
 
-            CertificateApplication application = new()
+            if (userNameClaim is not null)
             {
-                Count = int.Parse(certificateModel.Count),
-                ProvideTo = certificateModel.Type,
-                WithOfficialSeal = certificateModel.WithOfficialSeal,
-            };
+                var userAccount = await _userManager.FindByEmailAsync(userNameClaim.Value);
 
-            return Ok();
+                if (userAccount is null)
+                {
+                    return NotFound("Пользователь с таким Email не найден");
+                }
+
+                var student = await _context.GraduateStudents
+                .Include(x => x.Department)
+                .Include(x => x.ScientificSpeciality)
+                .Include(x => x.ScientificSpeciality)
+                .Where(x => x.ApiUserId == userAccount.Id)
+                .FirstOrDefaultAsync();
+
+                if (student is null)
+                {
+                    return NotFound("Студент не найден");
+                }
+
+                CertificateApplication application = new()
+                {
+                    Count = int.Parse(certificateModel.Count),
+                    ProvideTo = certificateModel.Type,
+                    WithOfficialSeal = certificateModel.WithOfficialSeal,
+                };
+
+                var newAppliction = await _context.AddAsync(application);
+                newAppliction.Entity.Student = student;
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [Authorize(Roles = "Admin,Employee")]
-        [HttpGet("/certificates")]
+        [HttpGet("/certificateApplications/getAll")]
         public async Task<ActionResult<List<CertificateApplication>>> GetAllCertificateApplications()
         {
             return await _context.CertificateApplications.Include(x => x.Student).ToListAsync();

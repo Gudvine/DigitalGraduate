@@ -1,6 +1,7 @@
 ﻿using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace DigitalGraduate.Data.Models.UserData
 {
@@ -10,6 +11,7 @@ namespace DigitalGraduate.Data.Models.UserData
     public class GraduateStudent
     {
         public int Id { get; set; }
+        public string ApiUserId { get; set; } = string.Empty;
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Patronymic { get; set; } // Отчество

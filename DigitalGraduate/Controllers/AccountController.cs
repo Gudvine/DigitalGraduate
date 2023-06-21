@@ -118,7 +118,7 @@ namespace DigitalGraduate.Controllers
                 issuer: _configuration["JwtSettings:Issuer"]!,
                 audience: _configuration["JwtSettings:Audience"]!,
                 claims: claimsIdentity.Claims,
-                expires: now.Add(TimeSpan.FromMinutes(20)),
+                expires: now.Add(TimeSpan.FromMinutes(10)),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenKey)), SecurityAlgorithms.HmacSha256));
                 var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwtToken);
                     
@@ -145,17 +145,18 @@ namespace DigitalGraduate.Controllers
         [HttpGet("/auth/me")]
         public async Task<IActionResult> AuthMe()
         {
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim("someShit", "shiit"),
-            };
-
             var authSigningKey = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenKey)), SecurityAlgorithms.HmacSha256);
+
+            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+
+            var userNameClaim = currentUser.Claims.Where(x => x.Type == ClaimsIdentity.DefaultNameClaimType).FirstOrDefault();
+
+            var userAccount = await _userManager.FindByEmailAsync(userNameClaim.Value);
 
             var now = DateTime.UtcNow;
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(
-                claims,
+                currentUser.Claims,
                 "token",
                 ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
