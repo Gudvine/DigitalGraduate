@@ -1,5 +1,6 @@
 using DigitalGraduate.Data.Context;
 using DigitalGraduate.Data.Models.Identity;
+using DigitalGraduate.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddTransient<AuthenticationService>();
 builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
