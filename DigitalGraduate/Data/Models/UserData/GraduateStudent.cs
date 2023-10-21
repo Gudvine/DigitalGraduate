@@ -1,7 +1,6 @@
 ﻿using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 
 namespace DigitalGraduate.Data.Models.UserData
 {

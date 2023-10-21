@@ -89,13 +89,6 @@ namespace DigitalGraduate.Controllers
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            var actionResult = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, false, false);
-
-            if (!actionResult.Succeeded)
-            {
-                return Unauthorized();
-            }
-
             var user = await _userManager.FindByNameAsync(loginModel.Email);
 
             if (user is not null)
@@ -132,14 +125,6 @@ namespace DigitalGraduate.Controllers
             }
 
             return BadRequest();
-        }
-
-        [HttpGet("/test")]
-        public IActionResult Tes()
-        {
-            var user = HttpContext.User.Identity as ClaimsIdentity;
-
-            return Ok();
         }
 
         [HttpGet("/auth/me")]

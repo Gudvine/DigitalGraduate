@@ -20,9 +20,12 @@ var identityDbConnString = builder.Configuration.GetConnectionString("IdentityDb
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAspirantReactTestApp", policy =>
+    options.AddPolicy("CorsForTests", policy =>
     {
-        policy.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+        policy
+        .WithOrigins("http://localhost:3000")
+        .AllowAnyMethod()
+        .AllowAnyHeader();
     });
 });
 
@@ -44,6 +47,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidIssuer = config["JwtSettings:Issuer"],
@@ -62,13 +66,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-    options.UseMySql(testDbConnString, MySqlServerVersion.AutoDetect(testDbConnString)).EnableSensitiveDataLogging();
+    options.UseNpgsql(testDbConnString).EnableSensitiveDataLogging();
 }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
 builder.Services.AddDbContext<IdentityDbContext>(options =>
 {
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-    options.UseMySql(identityDbConnString, MySqlServerVersion.AutoDetect(identityDbConnString)).EnableSensitiveDataLogging();
+    options.UseNpgsql(identityDbConnString).EnableSensitiveDataLogging();
 }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -77,7 +81,7 @@ builder.Services.AddSwaggerGen(options =>
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Please enter a valid token",
+        Description = "¬ведите валидный токен",
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
         BearerFormat = "JWT",
@@ -112,7 +116,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowAspirantReactTestApp");
+app.UseCors("CorsForTests");
 
 app.UseAuthentication();
 app.UseAuthorization();
