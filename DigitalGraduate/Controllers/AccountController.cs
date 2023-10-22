@@ -37,6 +37,33 @@ namespace DigitalGraduate.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost("addDefaultRoles")]
+        public async Task<IActionResult> AddDefaultRoles()
+        {
+            string[] roles = new string[]
+            {
+                "Admin",
+                "Student",
+                "ScientificMentor",
+            };
+
+            foreach (var role in roles)
+            {
+                var roleExists = await _roleManager.RoleExistsAsync(role);
+
+                if (!roleExists)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole()
+                    {
+                        Name = role,
+                    });
+                }
+            }
+
+            return Ok("Инициализация базовых ролей завершена");
+        }
+
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser(RegisterModel model)
         {
@@ -114,7 +141,7 @@ namespace DigitalGraduate.Controllers
                 expires: now.Add(TimeSpan.FromMinutes(10)),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenKey)), SecurityAlgorithms.HmacSha256));
                 var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwtToken);
-                    
+
                 var response = new
                 {
                     token = encodedJwt,
