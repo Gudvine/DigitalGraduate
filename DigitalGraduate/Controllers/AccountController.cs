@@ -1,5 +1,6 @@
 ﻿using DigitalGraduate.Data.Context;
 using DigitalGraduate.Data.Models.Identity;
+using DigitalGraduate.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -20,20 +21,22 @@ namespace DigitalGraduate.Controllers
         private readonly ApplicationDbContext _appContext;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly AuthenticationService _authService;
 
-        private string TokenKey = "";
-
-        public AccountController(UserManager<ApiUser> userManager, SignInManager<ApiUser> signInManager, ApplicationDbContext appContext, IConfiguration configuration, RoleManager<IdentityRole> roleManager, IHttpContextAccessor contextAccessor)
+        public AccountController(
+            UserManager<ApiUser> userManager, 
+            SignInManager<ApiUser> signInManager, 
+            ApplicationDbContext appContext, 
+            IConfiguration configuration, 
+            RoleManager<IdentityRole> roleManager,
+            AuthenticationService authService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appContext = appContext;
             _configuration = configuration;
             _roleManager = roleManager;
-            _contextAccessor = contextAccessor;
-
-            TokenKey = _configuration["JwtSettings:Key"]!;
+            _authService = authService;
         }
 
         [AllowAnonymous]
@@ -120,32 +123,11 @@ namespace DigitalGraduate.Controllers
 
             if (user is not null)
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                var authClaims = new List<Claim>()
-                {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email!),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, roles.FirstOrDefault()),
-                };
-
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(
-                    authClaims,
-                    JwtBearerDefaults.AuthenticationScheme);
-
-                var now = DateTime.UtcNow;
-
-                var jwtToken = new JwtSecurityToken(
-                notBefore: now,
-                issuer: _configuration["JwtSettings:Issuer"]!,
-                audience: _configuration["JwtSettings:Audience"]!,
-                claims: claimsIdentity.Claims,
-                expires: now.Add(TimeSpan.FromMinutes(10)),
-                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenKey)), SecurityAlgorithms.HmacSha256));
-                var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+                var encodedJwt = _authService.GenerateToken(user);
 
                 var response = new
                 {
                     token = encodedJwt,
-                    username = claimsIdentity.Name
                 };
 
                 return Ok(response);
