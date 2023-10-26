@@ -88,11 +88,6 @@ namespace DigitalGraduate.Controllers
                 Email = model.Email
             };
 
-            //if (model.UserRole == "Student")
-            //{
-            //    await _userManager.AddClaimAsync(newUser, new Claim(ClaimTypes.));
-            //}
-
             var result = await _userManager.CreateAsync(newUser, model.Password);
 
             if (!result.Succeeded)
@@ -125,52 +120,47 @@ namespace DigitalGraduate.Controllers
             {
                 var encodedJwt = _authService.GenerateToken(user);
 
-                var response = new
-                {
-                    token = encodedJwt,
-                };
-
-                return Ok(response);
+                return Ok(encodedJwt);
             }
 
             return BadRequest();
         }
 
-        [HttpGet("/auth/me")]
-        public async Task<IActionResult> AuthMe()
-        {
-            var authSigningKey = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenKey)), SecurityAlgorithms.HmacSha256);
+        //[HttpGet("/auth/me")]
+        //public async Task<IActionResult> AuthMe()
+        //{
+        //    var authSigningKey = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenKey)), SecurityAlgorithms.HmacSha256);
 
-            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+        //    var currentUser = HttpContext.User.Identity as ClaimsIdentity;
 
-            var userNameClaim = currentUser.Claims.Where(x => x.Type == ClaimsIdentity.DefaultNameClaimType).FirstOrDefault();
+        //    var userNameClaim = currentUser.Claims.Where(x => x.Type == ClaimsIdentity.DefaultNameClaimType).FirstOrDefault();
 
-            var userAccount = await _userManager.FindByEmailAsync(userNameClaim.Value);
+        //    var userAccount = await _userManager.FindByEmailAsync(userNameClaim.Value);
 
-            var now = DateTime.UtcNow;
+        //    var now = DateTime.UtcNow;
 
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(
-                currentUser.Claims,
-                "token",
-                ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
+        //    ClaimsIdentity claimsIdentity = new ClaimsIdentity(
+        //        currentUser.Claims,
+        //        "token",
+        //        ClaimsIdentity.DefaultNameClaimType,
+        //        ClaimsIdentity.DefaultRoleClaimType);
 
-            var jwt = new JwtSecurityToken(
-            notBefore: now,
-            claims: claimsIdentity.Claims,
-            issuer: _configuration["jwtsettings:issuer"]!,
-            audience: _configuration["jwtsettings:audience"]!,
-            expires: now.Add(TimeSpan.FromMinutes(20)),
-            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenKey)), SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+        //    var jwt = new JwtSecurityToken(
+        //    notBefore: now,
+        //    claims: claimsIdentity.Claims,
+        //    issuer: _configuration["jwtsettings:issuer"]!,
+        //    audience: _configuration["jwtsettings:audience"]!,
+        //    expires: now.Add(TimeSpan.FromMinutes(20)),
+        //    signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenKey)), SecurityAlgorithms.HmacSha256));
+        //    var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            var response = new
-            {
-                access_token = encodedJwt,
-                username = claimsIdentity.Name
-            };
+        //    var response = new
+        //    {
+        //        access_token = encodedJwt,
+        //        username = claimsIdentity.Name
+        //    };
 
-            return Ok(response);
-        }
+        //    return Ok(response);
+        //}
     }
 }

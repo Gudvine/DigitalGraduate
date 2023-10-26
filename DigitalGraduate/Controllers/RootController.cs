@@ -43,6 +43,7 @@ namespace DigitalGraduate.Controllers
         }
 
         [HttpGet("/getTrainingAreas")]
+        [Authorize(Roles = "Student")]
         public ActionResult<List<TrainingArea>> GetTrainingAreas()
         {
             return _context.TrainingAreas.ToList();
