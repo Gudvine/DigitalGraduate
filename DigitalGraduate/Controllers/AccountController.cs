@@ -20,27 +20,24 @@ namespace DigitalGraduate.Controllers
         private readonly SignInManager<ApiUser> _signInManager;
         private readonly ApplicationDbContext _appContext;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration _configuration;
         private readonly AuthenticationService _authService;
 
         public AccountController(
-            UserManager<ApiUser> userManager, 
-            SignInManager<ApiUser> signInManager, 
-            ApplicationDbContext appContext, 
-            IConfiguration configuration, 
+            UserManager<ApiUser> userManager,
+            SignInManager<ApiUser> signInManager,
+            ApplicationDbContext appContext,
             RoleManager<IdentityRole> roleManager,
             AuthenticationService authService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appContext = appContext;
-            _configuration = configuration;
             _roleManager = roleManager;
             _authService = authService;
         }
 
-        [AllowAnonymous]
         [HttpPost("addDefaultRoles")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddDefaultRoles()
         {
             string[] roles = new string[]
@@ -67,7 +64,7 @@ namespace DigitalGraduate.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("register")]
+        [HttpPost("/auth/register")]
         public async Task<IActionResult> RegisterUser(RegisterModel model)
         {
             if (!ModelState.IsValid)
@@ -85,7 +82,8 @@ namespace DigitalGraduate.Controllers
             var newUser = new ApiUser
             {
                 UserName = model.Login,
-                Email = model.Email
+                Email = model.Email,
+                FirstName = model.FirstName,
             };
 
             var result = await _userManager.CreateAsync(newUser, model.Password);
@@ -102,7 +100,7 @@ namespace DigitalGraduate.Controllers
                 return BadRequest(new { Error = "Что-то пошло не так!" });
             }
 
-            return Ok();
+            return Ok(newUser.Id);
         }
 
         [AllowAnonymous]
@@ -114,53 +112,32 @@ namespace DigitalGraduate.Controllers
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            var user = await _userManager.FindByNameAsync(loginModel.Email);
+            var user = await _userManager.FindByNameAsync(loginModel.UserName);
 
             if (user is not null)
             {
+                bool passwordIsValid = await _userManager.CheckPasswordAsync(user, loginModel.Password);
+
+                if (!passwordIsValid) { return Unauthorized("Логин или пароль введен неверно"); }
+
                 var encodedJwt = _authService.GenerateToken(user);
 
                 return Ok(encodedJwt);
             }
 
-            return BadRequest();
+            return Unauthorized("Логин или пароль введен неверно");
         }
 
-        //[HttpGet("/auth/me")]
-        //public async Task<IActionResult> AuthMe()
-        //{
-        //    var authSigningKey = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenKey)), SecurityAlgorithms.HmacSha256);
+        [Authorize]
+        [HttpGet("/users/{id}")]
+        public async Task<IActionResult> GetUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
 
-        //    var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            if (user is null)
+                return NotFound();
 
-        //    var userNameClaim = currentUser.Claims.Where(x => x.Type == ClaimsIdentity.DefaultNameClaimType).FirstOrDefault();
-
-        //    var userAccount = await _userManager.FindByEmailAsync(userNameClaim.Value);
-
-        //    var now = DateTime.UtcNow;
-
-        //    ClaimsIdentity claimsIdentity = new ClaimsIdentity(
-        //        currentUser.Claims,
-        //        "token",
-        //        ClaimsIdentity.DefaultNameClaimType,
-        //        ClaimsIdentity.DefaultRoleClaimType);
-
-        //    var jwt = new JwtSecurityToken(
-        //    notBefore: now,
-        //    claims: claimsIdentity.Claims,
-        //    issuer: _configuration["jwtsettings:issuer"]!,
-        //    audience: _configuration["jwtsettings:audience"]!,
-        //    expires: now.Add(TimeSpan.FromMinutes(20)),
-        //    signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(TokenKey)), SecurityAlgorithms.HmacSha256));
-        //    var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-        //    var response = new
-        //    {
-        //        access_token = encodedJwt,
-        //        username = claimsIdentity.Name
-        //    };
-
-        //    return Ok(response);
-        //}
+            return Ok();
+        }
     }
 }

@@ -8,6 +8,8 @@ namespace DigitalGraduate.Data.Models.Identity;
 /// </summary>
 public class RegisterModel
 {
+    [Required(ErrorMessage = "Введите имя")]
+    public string FirstName { get; set; } = string.Empty;
     [Required(ErrorMessage = "Не введен Email-адрес")]
     [EmailAddress(ErrorMessage = "Введите корректный Email")]
     public string Email { get; set; } = string.Empty;

@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DigitalGraduate.Controllers
 {
-    //[Authorize]
     [ApiController]
     [Route("[api]")]
     public class RootController : ControllerBase
