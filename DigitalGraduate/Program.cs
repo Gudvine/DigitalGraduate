@@ -1,4 +1,7 @@
 using DigitalGraduate.Data.Context;
+using DigitalGraduate.Data.DAL;
+using DigitalGraduate.Data.DAL.File;
+using DigitalGraduate.Data.DAL.Publication;
 using DigitalGraduate.Data.Models.Identity;
 using DigitalGraduate.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -98,12 +101,16 @@ builder.Services.AddSwaggerGen(options =>
                     Id="Bearer"
                 }
             },
-            new string[]{}
+            Array.Empty<string>()
         }
     });
 });
 
 builder.Services.AddHttpContextAccessor();
+
+// Repositories register
+builder.Services.AddScoped<IRepository<Publication>, PublicationRepository>();
+builder.Services.AddScoped<IRepository<FileInstance>, FileRepository>();
 
 var app = builder.Build();
 

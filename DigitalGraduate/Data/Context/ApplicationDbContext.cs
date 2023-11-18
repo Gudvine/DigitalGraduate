@@ -1,4 +1,6 @@
-﻿using DigitalGraduate.Data.Models.Catalogs;
+﻿using DigitalGraduate.Data.DAL.File;
+using DigitalGraduate.Data.DAL.Publication;
+using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.UserData;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +10,10 @@ namespace DigitalGraduate.Data.Context
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
+
+        // Актуальные модели
+        public virtual DbSet<Publication> Publications { get; set; }
+        public virtual DbSet<FileInstance> Files { get; set; }
 
         public virtual DbSet<TrainingArea> TrainingAreas { get; set; }
         public virtual DbSet<ScientificSpeciality> ScientificSpecialities { get; set; }

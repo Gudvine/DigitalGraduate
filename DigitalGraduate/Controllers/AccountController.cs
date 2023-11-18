@@ -1,14 +1,9 @@
 ﻿using DigitalGraduate.Data.Context;
 using DigitalGraduate.Data.Models.Identity;
 using DigitalGraduate.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace DigitalGraduate.Controllers
 {
@@ -18,20 +13,17 @@ namespace DigitalGraduate.Controllers
     {
         private readonly UserManager<ApiUser> _userManager;
         private readonly SignInManager<ApiUser> _signInManager;
-        private readonly ApplicationDbContext _appContext;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AuthenticationService _authService;
 
         public AccountController(
             UserManager<ApiUser> userManager,
             SignInManager<ApiUser> signInManager,
-            ApplicationDbContext appContext,
             RoleManager<IdentityRole> roleManager,
             AuthenticationService authService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _appContext = appContext;
             _roleManager = roleManager;
             _authService = authService;
         }
@@ -128,16 +120,6 @@ namespace DigitalGraduate.Controllers
             return Unauthorized("Логин или пароль введен неверно");
         }
 
-        [Authorize]
-        [HttpGet("/users/{id}")]
-        public async Task<IActionResult> GetUser(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user is null)
-                return NotFound();
-
-            return Ok();
-        }
+        
     }
 }
