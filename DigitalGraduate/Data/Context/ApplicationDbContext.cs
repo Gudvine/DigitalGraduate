@@ -1,4 +1,5 @@
-﻿using DigitalGraduate.Data.DAL.File;
+﻿using DigitalGraduate.Data.DAL.CertificateApplication;
+using DigitalGraduate.Data.DAL.File;
 using DigitalGraduate.Data.DAL.Publication;
 using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.UserData;
@@ -14,6 +15,7 @@ namespace DigitalGraduate.Data.Context
         // Актуальные модели
         public virtual DbSet<Publication> Publications { get; set; }
         public virtual DbSet<FileInstance> Files { get; set; }
+        public virtual DbSet<CertificateApplication> CertificateApplications { get; set; }
 
         public virtual DbSet<TrainingArea> TrainingAreas { get; set; }
         public virtual DbSet<ScientificSpeciality> ScientificSpecialities { get; set; }
@@ -24,6 +26,5 @@ namespace DigitalGraduate.Data.Context
         public virtual DbSet<University> Universities { get; set; }
         public virtual DbSet<UniversityEvent> UniversityEvents { get; set; }
         public virtual DbSet<Grant> Grants { get; set; }
-        public virtual DbSet<CertificateApplication> CertificateApplications { get; set; }
     }
 }

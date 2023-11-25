@@ -1,4 +1,5 @@
 ﻿using DigitalGraduate.Data.Context;
+using DigitalGraduate.Data.DAL.CertificateApplication;
 using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.Certificates;
 using DigitalGraduate.Data.Models.Identity;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 using System.Security.Claims;
 
 namespace DigitalGraduate.Controllers
@@ -16,71 +18,41 @@ namespace DigitalGraduate.Controllers
     {
         readonly UserManager<ApiUser> _userManager;
         readonly ApplicationDbContext _context;
+        private CertificateApplicationRepository _certificateRepository;
 
-        public CertificateController(UserManager<ApiUser> userManager, ApplicationDbContext context)
+        public CertificateController(UserManager<ApiUser> userManager, ApplicationDbContext context, CertificateApplicationRepository certificateRepository)
         {
             _userManager = userManager;
             _context = context;
+            _certificateRepository = certificateRepository;
         }
 
-        [Authorize(Roles = "Admin,Student,Employee")]
-        [HttpPost("/application-certificate")]
+        //[Authorize(Roles = "Admin,Student,Employee")]
+        [HttpPost("/orderCertificate")]
         public async Task<IActionResult> CreateCertificateApplication(ApplicationCertificateModel certificateModel)
         {
-            var currentUser = HttpContext.User.Identity as ClaimsIdentity;
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            if (currentUser is null)
+            CertificateApplication application = new()
             {
-                return Unauthorized();
-            }
+                Count = certificateModel.Count,
+                ProvideTo = certificateModel.SpaceRequirement,
+                WithOfficialSeal = certificateModel.NeedOfficialSeal,
+                StudentId = certificateModel.UserId
+            };
 
-            var userNameClaim = currentUser.Claims.Where(x => x.Type == ClaimsIdentity.DefaultNameClaimType).FirstOrDefault();
+            _certificateRepository.Create(application);
+            _certificateRepository.Save();
 
-            if (userNameClaim is not null)
-            {
-                var userAccount = await _userManager.FindByEmailAsync(userNameClaim.Value);
-
-                if (userAccount is null)
-                {
-                    return NotFound("Пользователь с таким Email не найден");
-                }
-
-                var student = await _context.GraduateStudents
-                .Include(x => x.Department)
-                .Include(x => x.ScientificSpeciality)
-                .Include(x => x.ScientificSpeciality)
-                .Where(x => x.ApiUserId == userAccount.Id)
-                .FirstOrDefaultAsync();
-
-                if (student is null)
-                {
-                    return NotFound("Студент не найден");
-                }
-
-                CertificateApplication application = new()
-                {
-                    Count = int.Parse(certificateModel.Count),
-                    ProvideTo = certificateModel.Type,
-                    WithOfficialSeal = certificateModel.WithOfficialSeal,
-                };
-
-                var newAppliction = await _context.AddAsync(application);
-                newAppliction.Entity.Student = student;
-                await _context.SaveChangesAsync();
-
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
+            return Ok();
         }
 
-        [Authorize(Roles = "Admin,Employee")]
-        [HttpGet("/certificateApplications/getAll")]
-        public async Task<ActionResult<List<CertificateApplication>>> GetAllCertificateApplications()
+        //[Authorize(Roles = "Admin,Employee")]
+        [HttpGet("/certificateApplications/all")]
+        public IEnumerable<CertificateApplication> GetAllCertificateApplications()
         {
-            return await _context.CertificateApplications.Include(x => x.Student).ToListAsync();
+            return _certificateRepository.GetAll();
         }
     }
 }
