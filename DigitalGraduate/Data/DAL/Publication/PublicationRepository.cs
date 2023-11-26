@@ -1,4 +1,5 @@
 ﻿using DigitalGraduate.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace DigitalGraduate.Data.DAL.Publication;
 
@@ -9,21 +10,26 @@ public class PublicationRepository : IRepository<Publication>
 {
     private ApplicationDbContext _dbContext;
 
-    public PublicationRepository(ApplicationDbContext dbContext) 
+    public PublicationRepository(ApplicationDbContext dbContext)
         => _dbContext = dbContext;
 
     /// <summary>
     /// Создает запись о публикации
     /// </summary>
     /// <param name="item"></param>
-    public void Create(Publication item) 
-        => _dbContext.Publications.Add(item);
+    public async Task<Publication> Create(Publication item)
+    {
+        var result = await _dbContext.Publications.AddAsync(item);
+        await _dbContext.SaveChangesAsync();
+
+        return result.Entity;
+    }
 
     /// <summary>
     /// Удаляет запись о публикации
     /// </summary>
     /// <param name="id"></param>
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
         var publicationToDelete = _dbContext.Publications.Where(x => x.Id == id).FirstOrDefault();
 
@@ -31,31 +37,38 @@ public class PublicationRepository : IRepository<Publication>
             return;
 
         _dbContext.Publications.Remove(publicationToDelete);
+        await _dbContext.SaveChangesAsync();
     }
 
     /// <summary>
     /// Получает все записи о публикациях
     /// </summary>
-    public IEnumerable<Publication> GetAll() 
-        => _dbContext.Publications.ToList();
+    public async Task<IEnumerable<Publication>> GetAll()
+        => await _dbContext.Publications.ToListAsync();
 
     /// <summary>
     /// Возвращает запись о публикации на основе заданного id
     /// </summary>
     /// <param name="id"></param>
-    public Publication? GetById(int id)
-        => _dbContext.Publications.Where(x => x.Id == id).FirstOrDefault();
+    public async Task<Publication?> GetById(int id)
+        => await _dbContext.Publications.FirstOrDefaultAsync();
 
     /// <summary>
     /// Обновляет информацию в записи о публикации
     /// </summary>
     /// <param name="item"></param>
-    public Publication Update(Publication item)
+    public async Task<Publication?> Update(Publication item)
     {
-        _dbContext.Publications.Update(item);
-        return item;
-    }
+        var result = await _dbContext.Publications.FirstOrDefaultAsync(x => x.Id == item.Id);
 
-    public async void Save()
-        => await _dbContext.SaveChangesAsync();
+        if (result is null)
+            return null;
+
+        result.Name = item.Name;
+        result.PublishYear = item.PublishYear;
+
+        await _dbContext.SaveChangesAsync();
+
+        return result;
+    }
 }

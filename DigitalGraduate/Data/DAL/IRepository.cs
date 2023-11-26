@@ -2,10 +2,9 @@
 
 public interface IRepository<TData> where TData : class
 {
-    IEnumerable<TData> GetAll();
-    TData GetById(int id);
-    void Create(TData item);
-    TData Update(TData item);
-    void Delete(int id);
-    void Save();
+    Task<IEnumerable<TData>> GetAll();
+    Task<TData> GetById(int id);
+    Task<TData> Create(TData item);
+    Task<TData> Update(TData item);
+    Task Delete(int id);
 }

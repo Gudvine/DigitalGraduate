@@ -45,4 +45,29 @@ public class CertificateApplicationRepository : IRepository<CertificateApplicati
         _dbContext.CertificateApplications.Update(item);
         return item;
     }
+
+    Task<CertificateApplication> IRepository<CertificateApplication>.Create(CertificateApplication item)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task IRepository<CertificateApplication>.Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<IEnumerable<CertificateApplication>> IRepository<CertificateApplication>.GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<CertificateApplication> IRepository<CertificateApplication>.GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<CertificateApplication> IRepository<CertificateApplication>.Update(CertificateApplication item)
+    {
+        throw new NotImplementedException();
+    }
 }

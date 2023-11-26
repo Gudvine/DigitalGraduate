@@ -61,4 +61,29 @@ public class FileRepository : IRepository<FileInstance>
         _dbContext.Files.Update(item);
         return item;
     }
+
+    Task<FileInstance> IRepository<FileInstance>.Create(FileInstance item)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task IRepository<FileInstance>.Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<IEnumerable<FileInstance>> IRepository<FileInstance>.GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<FileInstance> IRepository<FileInstance>.GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<FileInstance> IRepository<FileInstance>.Update(FileInstance item)
+    {
+        throw new NotImplementedException();
+    }
 }

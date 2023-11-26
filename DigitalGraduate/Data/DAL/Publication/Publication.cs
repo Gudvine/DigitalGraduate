@@ -18,6 +18,10 @@ public class Publication
     /// </summary>
     public int PublishYear { get; set; }
     /// <summary>
+    /// Издание
+    /// </summary>
+    public string Edition { get; set; } = string.Empty;
+    /// <summary>
     /// Id файла научной публикации
     /// </summary>
     public int FileId { get; set; }

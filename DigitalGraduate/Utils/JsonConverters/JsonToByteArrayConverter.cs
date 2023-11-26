@@ -10,11 +10,19 @@ internal sealed class JsonToByteArrayConverter : JsonConverter<byte[]?>
 {
     public override byte[] Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        short[] sByteArray = JsonSerializer.Deserialize<short[]>(ref reader);
-        byte[] value = new byte[sByteArray.Length];
-        for (int i = 0; i < sByteArray.Length; i++)
+        byte[]? value = null;
+        short[] sByteArray;
+        try
         {
-            value[i] = (byte)sByteArray[i];
+            sByteArray = JsonSerializer.Deserialize<short[]>(ref reader);
+            value = new byte[sByteArray.Length];
+            for (int i = 0; i < sByteArray.Length; i++)
+            {
+                value[i] = (byte)sByteArray[i];
+            }
+        }
+        catch (Exception)
+        {
         }
 
         return value;

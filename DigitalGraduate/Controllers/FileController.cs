@@ -17,9 +17,9 @@ namespace DigitalGraduate.Controllers
         }
 
         [HttpGet("all")]
-        public IEnumerable<FileInstance> GetAllFiles()
+        public async Task<IEnumerable<FileInstance>> GetAllFiles()
         {
-            var allFiles = _fileRepository.GetAll();
+            var allFiles = await _fileRepository.GetAll();
 
             return allFiles;
         }
