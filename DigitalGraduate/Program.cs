@@ -4,6 +4,7 @@ using DigitalGraduate.Data.DAL.File;
 using DigitalGraduate.Data.DAL.Publication;
 using DigitalGraduate.Data.Models.Identity;
 using DigitalGraduate.Services;
+using DigitalGraduate.Utils.JsonConverters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,10 @@ var identityDbConnString = builder.Configuration.GetConnectionString("IdentityDb
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonToByteArrayConverter());
+});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsForTests", policy =>
