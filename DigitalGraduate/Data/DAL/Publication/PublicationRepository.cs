@@ -51,7 +51,7 @@ public class PublicationRepository : IRepository<Publication>
     /// </summary>
     /// <param name="id"></param>
     public async Task<Publication?> GetById(int id)
-        => await _dbContext.Publications.FirstOrDefaultAsync();
+        => await _dbContext.Publications.FirstOrDefaultAsync(x => x.Id == id);
 
     /// <summary>
     /// Обновляет информацию в записи о публикации

@@ -1,8 +1,11 @@
-﻿
-using DigitalGraduate.Data.Context;
+﻿using DigitalGraduate.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace DigitalGraduate.Data.DAL.CertificateApplication;
 
+/// <summary>
+/// Репозиторий заявок на справку
+/// </summary>
 public class CertificateApplicationRepository : IRepository<CertificateApplication>
 {
     private ApplicationDbContext _dbContext;
@@ -14,14 +17,19 @@ public class CertificateApplicationRepository : IRepository<CertificateApplicati
     /// Создает запись о заявке на справку
     /// </summary>
     /// <param name="item"></param>
-    public void Create(CertificateApplication item)
-        => _dbContext.CertificateApplications.Add(item);
+    public async Task<CertificateApplication> Create(CertificateApplication item)
+    {
+        var result = await _dbContext.CertificateApplications.AddAsync(item);
+        await _dbContext.SaveChangesAsync();
+
+        return result.Entity;
+    }
 
     /// <summary>
     /// Удаляет запись о заявке на справку
     /// </summary>
     /// <param name="id"></param>
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
         var certificateAppToDelete = _dbContext.CertificateApplications.FirstOrDefault(x => x.Id == id);
 
@@ -29,45 +37,43 @@ public class CertificateApplicationRepository : IRepository<CertificateApplicati
             return;
 
         _dbContext.CertificateApplications.Remove(certificateAppToDelete);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public IEnumerable<CertificateApplication> GetAll()
-        => _dbContext.CertificateApplications.ToList();
+    /// <summary>
+    /// Возвращает все записи о заявках на справку
+    /// </summary>
+    /// <returns></returns>
+    public async Task<IEnumerable<CertificateApplication>> GetAll()
+        => await _dbContext.CertificateApplications.ToListAsync();
 
-    public CertificateApplication? GetById(int id)
-        => _dbContext.CertificateApplications.Where(x => x.Id == id).FirstOrDefault();
+    /// <summary>
+    /// Возвращает запись о заявке на справку по заданному Id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task<CertificateApplication?> GetById(int id)
+        => await _dbContext.CertificateApplications.FirstOrDefaultAsync(x => x.Id == id);
 
-    public async void Save()
-        => await _dbContext.SaveChangesAsync();
-
-    public CertificateApplication Update(CertificateApplication item)
+    /// <summary>
+    /// Обновляет информацию о заявке на справку
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public async Task<CertificateApplication?> Update(CertificateApplication item)
     {
-        _dbContext.CertificateApplications.Update(item);
-        return item;
-    }
+        var result = await _dbContext.CertificateApplications.FirstOrDefaultAsync(x => x.Id == item.Id);
 
-    Task<CertificateApplication> IRepository<CertificateApplication>.Create(CertificateApplication item)
-    {
-        throw new NotImplementedException();
-    }
+        if (result is null)
+            return null;
 
-    Task IRepository<CertificateApplication>.Delete(int id)
-    {
-        throw new NotImplementedException();
-    }
+        result.ProvideTo = item.ProvideTo;
+        result.WithOfficialSeal = item.WithOfficialSeal;
+        result.StudentId = item.StudentId;
+        result.Count = item.Count;
 
-    Task<IEnumerable<CertificateApplication>> IRepository<CertificateApplication>.GetAll()
-    {
-        throw new NotImplementedException();
-    }
+        await _dbContext.SaveChangesAsync();
 
-    Task<CertificateApplication> IRepository<CertificateApplication>.GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<CertificateApplication> IRepository<CertificateApplication>.Update(CertificateApplication item)
-    {
-        throw new NotImplementedException();
+        return result;
     }
 }

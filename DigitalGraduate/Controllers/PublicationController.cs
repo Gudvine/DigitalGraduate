@@ -59,6 +59,8 @@ namespace DigitalGraduate.Controllers
         [HttpPost("/updatePublication")]
         public async Task<Publication> UpdatePublication(PublicationModel model)
         {
+            //_publicationRepository.Update();
+
             return new();
         }
     }

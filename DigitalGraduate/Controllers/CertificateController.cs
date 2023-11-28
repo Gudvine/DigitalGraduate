@@ -43,7 +43,6 @@ namespace DigitalGraduate.Controllers
             };
 
             _certificateRepository.Create(application);
-            _certificateRepository.Save();
 
             return Ok();
         }

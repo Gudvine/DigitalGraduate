@@ -1,5 +1,6 @@
 using DigitalGraduate.Data.Context;
 using DigitalGraduate.Data.DAL;
+using DigitalGraduate.Data.DAL.CertificateApplication;
 using DigitalGraduate.Data.DAL.File;
 using DigitalGraduate.Data.DAL.Publication;
 using DigitalGraduate.Data.Models.Identity;
@@ -115,6 +116,7 @@ builder.Services.AddHttpContextAccessor();
 // Repositories register
 builder.Services.AddScoped<IRepository<Publication>, PublicationRepository>();
 builder.Services.AddScoped<IRepository<FileInstance>, FileRepository>();
+builder.Services.AddScoped<IRepository<CertificateApplication>, CertificateApplicationRepository>();
 
 var app = builder.Build();
 
