@@ -19,9 +19,12 @@ public class GrantRepository : IRepository<Grant>
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public Task<Grant> Create(Grant item)
+    public async Task<Grant> Create(Grant item)
     {
-        throw new NotImplementedException();
+        var result = await _dbContext.Grants.AddAsync(item);
+        await _dbContext.SaveChangesAsync();
+
+        return result.Entity;
     }
 
     /// <summary>
@@ -29,9 +32,15 @@ public class GrantRepository : IRepository<Grant>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public Task Delete(int id)
+    public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+        var grantToDelete = _dbContext.Grants.FirstOrDefault(x => x.Id == id);
+
+        if (grantToDelete is null)
+            return;
+
+        _dbContext.Grants.Remove(grantToDelete);
+        await _dbContext.SaveChangesAsync();
     }
 
     /// <summary>
@@ -46,16 +55,26 @@ public class GrantRepository : IRepository<Grant>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public Task<Grant?> GetById(int id)
-        => _dbContext.Grants.FirstOrDefaultAsync(x => x.Id == id);
+    public async Task<Grant?> GetById(int id)
+        => await _dbContext.Grants.FirstOrDefaultAsync(x => x.Id == id);
 
     /// <summary>
     /// Обновляет информацию о гранте
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public Task<Grant> Update(Grant item)
+    public async Task<Grant?> Update(Grant item)
     {
-        throw new NotImplementedException();
+        var result = await _dbContext.Grants.FirstOrDefaultAsync(x => x.Id == item.Id);
+
+        if (result is null)
+            return null;
+
+        result.Title = item.Title;
+        result.GrantParticipation = item.GrantParticipation;
+
+        await _dbContext.SaveChangesAsync();
+
+        return result;
     }
 }

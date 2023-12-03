@@ -1,7 +1,9 @@
 ﻿using DigitalGraduate.Data.DAL.CertificateApplication;
 using DigitalGraduate.Data.DAL.File;
 using DigitalGraduate.Data.DAL.Grant;
+using DigitalGraduate.Data.DAL.Patent;
 using DigitalGraduate.Data.DAL.Publication;
+using DigitalGraduate.Data.DAL.ScientificCompetition;
 using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.UserData;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +20,10 @@ namespace DigitalGraduate.Data.Context
         public virtual DbSet<FileInstance> Files { get; set; }
         public virtual DbSet<CertificateApplication> CertificateApplications { get; set; }
         public virtual DbSet<Grant> Grants { get; set; }
+        public virtual DbSet<Patent> Patents { get; set; }
+        public virtual DbSet<ScientificCompetition> ScientificCompetitions { get; set; }
 
+        // --------
         public virtual DbSet<TrainingArea> TrainingAreas { get; set; }
         public virtual DbSet<ScientificSpeciality> ScientificSpecialities { get; set; }
         public virtual DbSet<GraduateProgram> GraduatePrograms { get; set; }
