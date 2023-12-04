@@ -1,5 +1,5 @@
-﻿
-using DigitalGraduate.Data.Context;
+﻿using DigitalGraduate.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace DigitalGraduate.Data.DAL.File;
 
@@ -14,76 +14,67 @@ public class FileRepository : IRepository<FileInstance>
         => _dbContext = dbContext;
 
     /// <summary>
-    /// Создает новую запись о файле
+    /// Создает запись о файле
     /// </summary>
-    public void Create(FileInstance item) 
-        => _dbContext.Files.Add(item);
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public async Task<FileInstance> Create(FileInstance item)
+    {
+        var result = await _dbContext.Files.AddAsync(item);
+        await _dbContext.SaveChangesAsync();
+
+        return result.Entity;
+    }
 
     /// <summary>
     /// Удаляет запись о файле
     /// </summary>
-    public void Delete(int id)
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task Delete(int id)
     {
-        var fileToDelete = GetById(id);
+        var competitionToDelete = _dbContext.Files.FirstOrDefault(x => x.Id == id);
 
-        if (fileToDelete is null)
+        if (competitionToDelete is null)
             return;
 
-        _dbContext.Files.Remove(fileToDelete);
+        _dbContext.Files.Remove(competitionToDelete);
+        await _dbContext.SaveChangesAsync();
     }
 
     /// <summary>
     /// Получает все записи о файлах
     /// </summary>
-    public IEnumerable<FileInstance> GetAll()
-        => _dbContext.Files.ToList();
+    /// <returns></returns>
+    public async Task<IEnumerable<FileInstance>> GetAll()
+        => await _dbContext.Files.ToListAsync();
 
     /// <summary>
     /// Получает запись о файле по заданному Id
     /// </summary>
     /// <param name="id"></param>
-    public FileInstance? GetById(int id)
-    {
-        var file = _dbContext.Files.SingleOrDefault(f => f.Id == id);
-
-        return file;
-    }
-
-    public void Save() 
-        => _dbContext.SaveChanges();
+    /// <returns></returns>
+    public async Task<FileInstance?> GetById(int id)
+        => await _dbContext.Files.FirstOrDefaultAsync(x => x.Id == id);
 
     /// <summary>
     /// Обновляет запись о файле
     /// </summary>
     /// <param name="item"></param>
-    public FileInstance Update(FileInstance item)
+    /// <returns></returns>
+    public async Task<FileInstance?> Update(FileInstance item)
     {
-        _dbContext.Files.Update(item);
-        return item;
-    }
+        var result = await _dbContext.Files.FirstOrDefaultAsync(x => x.Id == item.Id);
 
-    Task<FileInstance> IRepository<FileInstance>.Create(FileInstance item)
-    {
-        throw new NotImplementedException();
-    }
+        if (result is null)
+            return null;
 
-    Task IRepository<FileInstance>.Delete(int id)
-    {
-        throw new NotImplementedException();
-    }
+        result.Name = item.Name;
+        result.Size = item.Size;
+        result.Content = item.Content;
 
-    Task<IEnumerable<FileInstance>> IRepository<FileInstance>.GetAll()
-    {
-        throw new NotImplementedException();
-    }
+        await _dbContext.SaveChangesAsync();
 
-    Task<FileInstance> IRepository<FileInstance>.GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<FileInstance> IRepository<FileInstance>.Update(FileInstance item)
-    {
-        throw new NotImplementedException();
+        return result;
     }
 }

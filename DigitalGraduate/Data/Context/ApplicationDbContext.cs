@@ -4,6 +4,7 @@ using DigitalGraduate.Data.DAL.Grant;
 using DigitalGraduate.Data.DAL.Patent;
 using DigitalGraduate.Data.DAL.Publication;
 using DigitalGraduate.Data.DAL.ScientificCompetition;
+using DigitalGraduate.Data.DAL.ScientificConference;
 using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.UserData;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace DigitalGraduate.Data.Context
         public virtual DbSet<Grant> Grants { get; set; }
         public virtual DbSet<Patent> Patents { get; set; }
         public virtual DbSet<ScientificCompetition> ScientificCompetitions { get; set; }
+        public virtual DbSet<ScientificConference> ScientificConferences { get; set; }
 
         // --------
         public virtual DbSet<TrainingArea> TrainingAreas { get; set; }

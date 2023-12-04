@@ -1,5 +1,4 @@
-﻿
-using DigitalGraduate.Data.Context;
+﻿using DigitalGraduate.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace DigitalGraduate.Data.DAL.ScientificCompetition;
