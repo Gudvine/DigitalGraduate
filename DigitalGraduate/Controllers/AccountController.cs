@@ -12,31 +12,29 @@ namespace DigitalGraduate.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApiUser> _userManager;
-        private readonly SignInManager<ApiUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AuthenticationService _authService;
 
         public AccountController(
             UserManager<ApiUser> userManager,
-            SignInManager<ApiUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             AuthenticationService authService)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _roleManager = roleManager;
             _authService = authService;
         }
 
         [HttpPost("addDefaultRoles")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddDefaultRoles()
         {
             string[] roles = new string[]
             {
-                "Admin",
-                "Student",
-                "ScientificMentor",
+                "admin",
+                "student",
+                "mentor",
+                "employee"
             };
 
             foreach (var role in roles)
@@ -57,7 +55,7 @@ namespace DigitalGraduate.Controllers
 
         [AllowAnonymous]
         [HttpPost("/auth/register")]
-        public async Task<IActionResult> RegisterUser(RegisterModel model)
+        public async Task<IActionResult> RegisterUser(RegisterDTO model)
         {
             if (!ModelState.IsValid)
             {
@@ -96,8 +94,8 @@ namespace DigitalGraduate.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("/auth/login")]
-        public async Task<IActionResult> LoginUser(LoginModel loginModel)
+        [HttpPost("/login")]
+        public async Task<IActionResult> LoginUser(LoginDTO loginModel)
         {
             if (!ModelState.IsValid)
             {
@@ -114,12 +112,19 @@ namespace DigitalGraduate.Controllers
 
                 var encodedJwt = _authService.GenerateToken(user);
 
-                return Ok(encodedJwt);
+                UserDTO userModel = new()
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    //UserRole = (await _userManager.GetRolesAsync(user)).ToList().FirstOrDefault(),
+                    UserRole = "employee",
+                    Token = encodedJwt
+                };
+
+                return Ok(userModel);
             }
 
             return Unauthorized("Логин или пароль введен неверно");
         }
-
-        
     }
 }

@@ -27,31 +27,31 @@ namespace DigitalGraduate.Controllers
             _certificateRepository = certificateRepository;
         }
 
-        //[Authorize(Roles = "Admin,Student,Employee")]
-        [HttpPost("/orderCertificate")]
-        public async Task<IActionResult> CreateCertificateApplication(ApplicationCertificateModel certificateModel)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        ////[Authorize(Roles = "Admin,Student,Employee")]
+        //[HttpPost("/orderCertificate")]
+        //public async Task<IActionResult> CreateCertificateApplication(ApplicationCertificateModel certificateModel)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
 
-            CertificateApplication application = new()
-            {
-                Count = certificateModel.Count,
-                ProvideTo = certificateModel.SpaceRequirement,
-                WithOfficialSeal = certificateModel.NeedOfficialSeal,
-                StudentId = certificateModel.UserId
-            };
+        //    CertificateApplication application = new()
+        //    {
+        //        Count = certificateModel.Count,
+        //        ProvideTo = certificateModel.SpaceRequirement,
+        //        WithOfficialSeal = certificateModel.NeedOfficialSeal,
+        //        StudentId = certificateModel.UserId
+        //    };
 
-            _certificateRepository.Create(application);
+        //    _certificateRepository.Create(application);
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
-        //[Authorize(Roles = "Admin,Employee")]
-        [HttpGet("/certificateApplications/all")]
-        public IEnumerable<CertificateApplication> GetAllCertificateApplications()
-        {
-            return _certificateRepository.GetAll();
-        }
+        ////[Authorize(Roles = "Admin,Employee")]
+        //[HttpGet("/certificateApplications/all")]
+        //public IEnumerable<CertificateApplication> GetAllCertificateApplications()
+        //{
+        //    return _certificateRepository.GetAll();
+        //}
     }
 }

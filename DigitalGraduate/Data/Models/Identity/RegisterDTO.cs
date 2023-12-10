@@ -6,7 +6,7 @@ namespace DigitalGraduate.Data.Models.Identity;
 /// Модель регистрации пользователя в системе.
 /// Содержит поля, необходимые для регистрации пользователя
 /// </summary>
-public class RegisterModel
+public class RegisterDTO
 {
     [Required(ErrorMessage = "Введите имя")]
     public string FirstName { get; set; } = string.Empty;

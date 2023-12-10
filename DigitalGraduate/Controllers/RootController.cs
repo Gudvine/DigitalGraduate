@@ -1,4 +1,5 @@
 ﻿using DigitalGraduate.Data.Context;
+using DigitalGraduate.Data.DAL.Grant;
 using DigitalGraduate.Data.Models.Catalogs;
 using DigitalGraduate.Data.Models.Identity;
 using DigitalGraduate.Data.Models.UserData;

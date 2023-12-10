@@ -2,6 +2,7 @@ using DigitalGraduate.Data.Context;
 using DigitalGraduate.Data.DAL;
 using DigitalGraduate.Data.DAL.CertificateApplication;
 using DigitalGraduate.Data.DAL.File;
+using DigitalGraduate.Data.DAL.Grant;
 using DigitalGraduate.Data.DAL.Patent;
 using DigitalGraduate.Data.DAL.Publication;
 using DigitalGraduate.Data.Models.Identity;
@@ -119,6 +120,7 @@ builder.Services.AddScoped<IRepository<Publication>, PublicationRepository>();
 builder.Services.AddScoped<IRepository<FileInstance>, FileRepository>();
 builder.Services.AddScoped<IRepository<CertificateApplication>, CertificateApplicationRepository>();
 builder.Services.AddScoped<IRepository<Patent>, PatentRepository>();
+builder.Services.AddScoped<IRepository<Grant>, GrantRepository>();
 
 var app = builder.Build();
 

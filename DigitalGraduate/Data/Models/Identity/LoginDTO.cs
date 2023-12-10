@@ -5,7 +5,7 @@ namespace DigitalGraduate.Data.Models.Identity;
 /// <summary>
 /// DTO-модель для контроллера логина в систему
 /// </summary>
-public class LoginModel
+public class LoginDTO
 {
     [Required(ErrorMessage = "Введите логин пользователя")]
     public string UserName { get; set; } = string.Empty;
