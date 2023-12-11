@@ -64,7 +64,7 @@ public class PublicationRepository : IRepository<Publication>
         if (result is null)
             return null;
 
-        result.Name = item.Name;
+        result.Title = item.Title;
         result.PublishYear = item.PublishYear;
 
         await _dbContext.SaveChangesAsync();

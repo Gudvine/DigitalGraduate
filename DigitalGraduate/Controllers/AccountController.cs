@@ -117,7 +117,7 @@ namespace DigitalGraduate.Controllers
                     Id = user.Id,
                     UserName = user.UserName,
                     //UserRole = (await _userManager.GetRolesAsync(user)).ToList().FirstOrDefault(),
-                    UserRole = "employee",
+                    UserRole = "student",
                     Token = encodedJwt
                 };
 

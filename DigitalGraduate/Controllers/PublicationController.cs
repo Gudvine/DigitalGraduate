@@ -1,5 +1,6 @@
 ﻿using DigitalGraduate.Data.DAL;
 using DigitalGraduate.Data.DAL.Publication;
+using DigitalGraduate.Data.Models.DTO.Publication;
 using DigitalGraduate.Data.Models.Publication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,29 +19,26 @@ namespace DigitalGraduate.Controllers
             _publicationRepository = publicationRepository;
         }
 
-        //[Authorize(Roles = "Admin")]
-        [HttpGet("all")]
-        public async Task<IEnumerable<Publication>> GetAllPublicationsForAdmin()
-        {
-            return await _publicationRepository.GetAll();
-        }
+        [HttpGet("/publications/{id}")]
+        public async Task<IEnumerable<Publication>> GetAllPublicationsForAdmin(string id)
+            => (await _publicationRepository.GetAll()).Where(x => x.UserId == id);
 
         [HttpPost("/addPublication")]
-        public async Task<IActionResult> CreatePublication(PublicationModel model)
+        public async Task<IActionResult> CreatePublication(AddPublicationDTO model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
 
-            Publication newPublication = new()
-            {
-                Name = model.Title,
-                PublishYear = model.Year,
-                Edition = model.Edition,
-            };
+            //Publication newPublication = new()
+            //{
+            //    Title = model.Title,
+            //    PublishYear = model.Year,
+            //    Edition = model.Edition,
+            //};
 
-            await _publicationRepository.Create(newPublication);
+            //await _publicationRepository.Create(newPublication);
 
-            return Ok(newPublication.Id);
+            return Ok();
         }
 
         [HttpPost("/delete/{id}")]
