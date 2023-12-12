@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DigitalGraduate.Data.Models.DTO.File;
+using System.ComponentModel.DataAnnotations;
 
 namespace DigitalGraduate.Data.Models.DTO.Publication;
 
@@ -36,4 +37,9 @@ public class AddPublicationDTO
     /// Id пользователя, автора статьи
     /// </summary>
     public string UserId { get; set; } = string.Empty;
+    /// <summary>
+    /// Файл публикации
+    /// </summary>
+    [Required(ErrorMessage = "Загрузите файл публикации")]
+    public FileDTO? File { get; set; }
 }

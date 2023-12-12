@@ -33,12 +33,12 @@ public class FileRepository : IRepository<FileInstance>
     /// <returns></returns>
     public async Task Delete(int id)
     {
-        var competitionToDelete = _dbContext.Files.FirstOrDefault(x => x.Id == id);
+        var fileToDelete = _dbContext.Files.FirstOrDefault(x => x.Id == id);
 
-        if (competitionToDelete is null)
+        if (fileToDelete is null)
             return;
 
-        _dbContext.Files.Remove(competitionToDelete);
+        _dbContext.Files.Remove(fileToDelete);
         await _dbContext.SaveChangesAsync();
     }
 
