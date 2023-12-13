@@ -1,10 +1,13 @@
 using DigitalGraduate.Data.Context;
 using DigitalGraduate.Data.DAL;
 using DigitalGraduate.Data.DAL.CertificateApplication;
+using DigitalGraduate.Data.DAL.Certification;
 using DigitalGraduate.Data.DAL.File;
 using DigitalGraduate.Data.DAL.Grant;
 using DigitalGraduate.Data.DAL.Patent;
 using DigitalGraduate.Data.DAL.Publication;
+using DigitalGraduate.Data.DAL.ScientificCompetition;
+using DigitalGraduate.Data.DAL.ScientificConference;
 using DigitalGraduate.Data.Models.Identity;
 using DigitalGraduate.Services;
 using DigitalGraduate.Utils.JsonConverters;
@@ -121,6 +124,9 @@ builder.Services.AddScoped<IRepository<FileInstance>, FileRepository>();
 builder.Services.AddScoped<IRepository<CertificateApplication>, CertificateApplicationRepository>();
 builder.Services.AddScoped<IRepository<Patent>, PatentRepository>();
 builder.Services.AddScoped<IRepository<Grant>, GrantRepository>();
+builder.Services.AddScoped<IRepository<ScientificCompetition>, ScientificCompetitionRepository>();
+builder.Services.AddScoped<IRepository<ScientificConference>, ScientificConferenceRepository>();
+builder.Services.AddScoped<IRepository<Certification>, CertificationRepository>();
 
 var app = builder.Build();
 

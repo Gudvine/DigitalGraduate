@@ -16,7 +16,6 @@ namespace DigitalGraduate.Controllers
             _userManager = userManager;
         }
 
-        [Authorize]
         [HttpGet("/profile/{id}")]
         public async Task<IActionResult> GetUserProfile(string id)
         {

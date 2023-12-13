@@ -17,4 +17,8 @@ public class Patent
     /// Дата выдачи патента
     /// </summary>
     public DateTime? IssueDate { get; set; }
+    /// <summary>
+    /// Id пользвователя, владельца патента
+    /// </summary>
+    public string? UserId { get; set; }
 }

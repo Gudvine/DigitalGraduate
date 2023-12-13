@@ -3,10 +3,7 @@ using DigitalGraduate.Data.DAL.File;
 using DigitalGraduate.Data.DAL.Publication;
 using DigitalGraduate.Data.Models.DTO.Publication;
 using DigitalGraduate.Data.Models.Publication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections;
-using System.Security.Policy;
 
 namespace DigitalGraduate.Controllers
 {

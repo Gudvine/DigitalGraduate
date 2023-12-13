@@ -21,4 +21,8 @@ public class ScientificCompetition
     /// Результат
     /// </summary>
     public string Result { get; set; }
+    /// <summary>
+    /// Id пользователя, участника конкурса
+    /// </summary>
+    public string? UserId { get; set; }
 }
