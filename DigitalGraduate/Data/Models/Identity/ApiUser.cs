@@ -20,5 +20,4 @@ public class ApiUser : IdentityUser
     /// Дата рождения
     /// </summary>
     public DateTime Birthday { get; set; }
-    //public string? Role { get; set; }
 }

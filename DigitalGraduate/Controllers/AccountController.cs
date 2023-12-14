@@ -112,12 +112,13 @@ namespace DigitalGraduate.Controllers
 
                 var encodedJwt = _authService.GenerateToken(user);
 
+                var userRole = (await _userManager.GetRolesAsync(user)).ToList().FirstOrDefault();
+
                 UserDTO userModel = new()
                 {
                     Id = user.Id,
                     UserName = user.UserName,
-                    //UserRole = (await _userManager.GetRolesAsync(user)).ToList().FirstOrDefault(),
-                    UserRole = "student",
+                    UserRole = userRole is null ? "student" : userRole,
                     Token = encodedJwt
                 };
 

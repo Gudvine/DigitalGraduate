@@ -8,6 +8,7 @@ using DigitalGraduate.Data.DAL.Patent;
 using DigitalGraduate.Data.DAL.Publication;
 using DigitalGraduate.Data.DAL.ScientificCompetition;
 using DigitalGraduate.Data.DAL.ScientificConference;
+using DigitalGraduate.Data.DAL.Student;
 using DigitalGraduate.Data.Models.Identity;
 using DigitalGraduate.Services;
 using DigitalGraduate.Utils.JsonConverters;
@@ -119,6 +120,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddHttpContextAccessor();
 
 // Repositories register
+builder.Services.AddScoped<IRepository<Student>, StudentRepository>();
 builder.Services.AddScoped<IRepository<Publication>, PublicationRepository>();
 builder.Services.AddScoped<IRepository<FileInstance>, FileRepository>();
 builder.Services.AddScoped<IRepository<CertificateApplication>, CertificateApplicationRepository>();
