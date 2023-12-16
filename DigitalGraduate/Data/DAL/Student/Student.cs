@@ -34,6 +34,30 @@ public class Student
     /// </summary>
     public int Year { get; set; }
     /// <summary>
+    /// Факультет
+    /// </summary>
+    public string? Faculty { get; set; }
+    /// <summary>
+    /// Кафедра
+    /// </summary>
+    public string? Department { get; set; }
+    /// <summary>
+    /// Направление
+    /// </summary>
+    public string? Direction { get; set; }
+    /// <summary>
+    /// Номер группы
+    /// </summary>
+    public string? GroupNumber { get; set; }
+    /// <summary>
+    /// Тип обучения
+    /// </summary>
+    public string? EducationType { get; set; }
+    /// <summary>
+    /// Форма обучения
+    /// </summary>
+    public string? EducationForm { get; set; }
+    /// <summary>
     /// Id пользователя, студента
     /// </summary>
     public string? UserId { get; set; }

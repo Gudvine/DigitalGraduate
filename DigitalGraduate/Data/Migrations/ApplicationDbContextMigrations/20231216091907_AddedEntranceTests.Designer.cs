@@ -3,6 +3,7 @@ using System;
 using DigitalGraduate.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DigitalGraduate.Data.Migrations.ApplicationDbContextMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231216091907_AddedEntranceTests")]
+    partial class AddedEntranceTests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,28 +49,6 @@ namespace DigitalGraduate.Data.Migrations.ApplicationDbContextMigrations
                     b.HasKey("Id");
 
                     b.ToTable("CertificateApplications");
-                });
-
-            modelBuilder.Entity("DigitalGraduate.Data.DAL.Certification.Certification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Result")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Semester")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Certifications");
                 });
 
             modelBuilder.Entity("DigitalGraduate.Data.DAL.EntranceTest.EntranceTest", b =>

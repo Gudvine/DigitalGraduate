@@ -8,6 +8,10 @@ namespace DigitalGraduate.Data.Models.DTO.Profile.Student;
 public class CreateStudentDTO
 {
     /// <summary>
+    /// Id студента
+    /// </summary>
+    public int Id { get; set; }
+    /// <summary>
     /// Имя студента
     /// </summary>
     [Required(ErrorMessage = "Укажите имя")]
@@ -24,6 +28,7 @@ public class CreateStudentDTO
     /// <summary>
     /// Дата рождения студента
     /// </summary>
+    [Required(ErrorMessage = "Укажите дату рождения")]
     public DateTime? BirthDate { get; set; }
     /// <summary>
     /// Обучение на бюджете Да/Нет
@@ -33,6 +38,30 @@ public class CreateStudentDTO
     /// Курс
     /// </summary>
     public int Year { get; set; }
+    /// <summary>
+    /// Факультет
+    /// </summary>
+    public string? Faculty { get; set; }
+    /// <summary>
+    /// Кафедра
+    /// </summary>
+    public string? Department { get; set; }
+    /// <summary>
+    /// Направление
+    /// </summary>
+    public string? Direction { get; set; }
+    /// <summary>
+    /// Номер группы
+    /// </summary>
+    public string? GroupNumber { get; set; }
+    /// <summary>
+    /// Тип обучения
+    /// </summary>
+    public string? EducationType { get; set; }
+    /// <summary>
+    /// Форма обучения
+    /// </summary>
+    public string? EducationForm { get; set; }
     /// <summary>
     /// Id пользователя, студента
     /// </summary>

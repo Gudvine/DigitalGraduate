@@ -1,9 +1,9 @@
-﻿namespace DigitalGraduate.Data.DAL.Certification;
+﻿namespace DigitalGraduate.Data.Models.DTO.Certification;
 
 /// <summary>
-/// Представляет аттестацию
+/// Представляет DTO Аттестации
 /// </summary>
-public class Certification
+public class CertificationDTO
 {
     /// <summary>
     /// Id аттестации

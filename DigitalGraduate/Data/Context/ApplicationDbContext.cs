@@ -1,4 +1,6 @@
 ﻿using DigitalGraduate.Data.DAL.CertificateApplication;
+using DigitalGraduate.Data.DAL.Certification;
+using DigitalGraduate.Data.DAL.EntranceTest;
 using DigitalGraduate.Data.DAL.File;
 using DigitalGraduate.Data.DAL.Grant;
 using DigitalGraduate.Data.DAL.Patent;
@@ -19,6 +21,8 @@ namespace DigitalGraduate.Data.Context
 
         // Актуальные модели
         public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<EntranceTest> EntranceTests { get; set; }
+        public virtual DbSet<Certification> Certifications { get; set; }
         public virtual DbSet<Publication> Publications { get; set; }
         public virtual DbSet<FileInstance> Files { get; set; }
         public virtual DbSet<CertificateApplication> CertificateApplications { get; set; }
