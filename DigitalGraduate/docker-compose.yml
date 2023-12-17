@@ -11,7 +11,7 @@ services:
     ports:
       - "80:80"
     networks:
-      - digitalgraduate
+      - digitalgraduate-dev
     depends_on:
       - postgres_db
   postgres_db:
