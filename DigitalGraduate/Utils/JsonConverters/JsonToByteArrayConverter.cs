@@ -1,0 +1,42 @@
+﻿using System.Text.Json.Serialization;
+using System.Text.Json;
+
+namespace DigitalGraduate.Utils.JsonConverters;
+
+/// <summary>
+/// Конвертирует base64 string в byte[]
+/// </summary>
+internal sealed class JsonToByteArrayConverter : JsonConverter<byte[]?>
+{
+    public override byte[] Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        byte[]? value = null;
+        short[] sByteArray;
+        try
+        {
+            sByteArray = JsonSerializer.Deserialize<short[]>(ref reader);
+            value = new byte[sByteArray.Length];
+            for (int i = 0; i < sByteArray.Length; i++)
+            {
+                value[i] = (byte)sByteArray[i];
+            }
+        }
+        catch (Exception)
+        {
+        }
+
+        return value;
+    }
+
+    public override void Write(Utf8JsonWriter writer, byte[] value, JsonSerializerOptions options)
+    {
+        writer.WriteStartArray();
+
+        foreach (var val in value)
+        {
+            writer.WriteNumberValue(val);
+        }
+
+        writer.WriteEndArray();
+    }
+}

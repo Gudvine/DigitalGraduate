@@ -1,4 +1,6 @@
-﻿namespace DigitalGraduate.Data.Models.Certificates
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DigitalGraduate.Data.Models.Certificates
 {
     /// <summary>
     /// Представляет модель заявки на офрмление справок студенту
@@ -8,14 +10,19 @@
         /// <summary>
         /// В какую организацию предоставляется
         /// </summary>
-        public string Type { get; set; } = string.Empty;
+        [Required]
+        public string SpaceRequirement { get; set; } = string.Empty;
         /// <summary>
         /// Количество справок
         /// </summary>
-        public string Count { get; set; } = string.Empty;
+        public int Count { get; set; }
         /// <summary>
-        /// Обозначает делать ли справку с гербовой печатью
+        /// Наличие гербовой печати
         /// </summary>
-        public bool WithOfficialSeal { get; set; }
+        public bool NeedOfficialSeal { get; set; }
+        /// <summary>
+        /// Id пользователя, заказывающего справку
+        /// </summary>
+        public int UserId { get; set; }
     }
 }

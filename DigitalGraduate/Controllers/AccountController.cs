@@ -1,17 +1,9 @@
 ﻿using DigitalGraduate.Data.Context;
 using DigitalGraduate.Data.Models.Identity;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
+using DigitalGraduate.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
 
 namespace DigitalGraduate.Controllers
 {
@@ -19,32 +11,69 @@ namespace DigitalGraduate.Controllers
     [Route("auth/[controller]")]
     public class AccountController : ControllerBase
     {
-        private const string SecretToken = "P8SID3zfe0PG#N!k5LVhtLAGzEPG#N!SI";
-        private static readonly TimeSpan TokenLifetime = TimeSpan.FromHours(5);
-
         private readonly UserManager<ApiUser> _userManager;
-        private readonly SignInManager<ApiUser> _signInManager;
-        private readonly ApplicationDbContext _appContext;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly AuthenticationService _authService;
 
-        public AccountController(UserManager<ApiUser> userManager, SignInManager<ApiUser> signInManager, ApplicationDbContext appContext)
+        public AccountController(
+            UserManager<ApiUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            AuthenticationService authService)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
-            _appContext = appContext;
+            _roleManager = roleManager;
+            _authService = authService;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> RegisterUser(RegisterModel model)
+        [HttpPost("addDefaultRoles")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> AddDefaultRoles()
+        {
+            string[] roles = new string[]
+            {
+                "admin",
+                "student",
+                "mentor",
+                "employee"
+            };
+
+            foreach (var role in roles)
+            {
+                var roleExists = await _roleManager.RoleExistsAsync(role);
+
+                if (!roleExists)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole()
+                    {
+                        Name = role,
+                    });
+                }
+            }
+
+            return Ok("Инициализация базовых ролей завершена");
+        }
+
+        [AllowAnonymous]
+        [HttpPost("/auth/register")]
+        public async Task<IActionResult> RegisterUser(RegisterDTO model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            var roleExists = await _roleManager.RoleExistsAsync(model.UserRole);
+
+            if (!roleExists)
+            {
+                return BadRequest(new { Error = "Такая роль не существует" });
+            }
+
             var newUser = new ApiUser
             {
                 UserName = model.Login,
                 Email = model.Email,
+                FirstName = model.FirstName,
             };
 
             var result = await _userManager.CreateAsync(newUser, model.Password);
@@ -54,84 +83,49 @@ namespace DigitalGraduate.Controllers
                 return BadRequest(result.Errors);
             }
 
-            return Ok();
+            var roleResult = await _userManager.AddToRoleAsync(newUser, model.UserRole);
+
+            if (!roleResult.Succeeded)
+            {
+                return BadRequest(new { Error = "Что-то пошло не так!" });
+            }
+
+            return Ok(newUser.Id);
         }
 
         [AllowAnonymous]
-        [HttpPost("/auth/login")]
-        public async Task<IActionResult> LoginUser(LoginModel loginModel)
+        [HttpPost("/login")]
+        public async Task<IActionResult> LoginUser(LoginDTO loginModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            var actionResult = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, false, false);
+            var user = await _userManager.FindByNameAsync(loginModel.UserName);
 
-            if (!actionResult.Succeeded)
+            if (user is not null)
             {
-                return BadRequest();
+                bool passwordIsValid = await _userManager.CheckPasswordAsync(user, loginModel.Password);
+
+                if (!passwordIsValid) { return Unauthorized("Логин или пароль введен неверно"); }
+
+                var encodedJwt = _authService.GenerateToken(user);
+
+                var userRole = (await _userManager.GetRolesAsync(user)).ToList().FirstOrDefault();
+
+                UserDTO userModel = new()
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    UserRole = userRole is null ? "employee" : userRole,
+                    Token = encodedJwt
+                };
+
+                return Ok(userModel);
             }
 
-            var user = await _userManager.FindByNameAsync(loginModel.Email);
-
-            var claims = new List<Claim>
-            {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
-                };
-            ClaimsIdentity claimsIdentity =
-            new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-
-            var now = DateTime.UtcNow;
-
-            var jwt = new JwtSecurityToken(
-            notBefore: now,
-            claims: claimsIdentity.Claims,
-            expires: now.Add(TimeSpan.FromMinutes(30)),
-                    signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes("mysupersecret_secretkey!123")), SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            var response = new
-            {
-                access_token = encodedJwt,
-                username = claimsIdentity.Name
-            };
-
-            return Ok(response);
-        }
-
-        [HttpGet("/auth/me")]
-        public async Task<IActionResult> AuthMe()
-        {
-            var claimsUser = HttpContext.User;
-
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            var claims = new List<Claim>
-            {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, User.Identity.Name),
-                };
-            ClaimsIdentity claimsIdentity =
-            new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-
-            var now = DateTime.UtcNow;
-
-            var jwt = new JwtSecurityToken(
-            notBefore: now,
-            claims: claimsIdentity.Claims,
-            expires: now.Add(TimeSpan.FromMinutes(30)),
-                    signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes("mysupersecret_secretkey!123")), SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            var response = new
-            {
-                access_token = encodedJwt,
-                username = claimsIdentity.Name
-            };
-
-            return Ok(response);
+            return Unauthorized("Логин или пароль введен неверно");
         }
     }
 }
