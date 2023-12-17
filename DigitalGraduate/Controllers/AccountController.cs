@@ -118,7 +118,7 @@ namespace DigitalGraduate.Controllers
                 {
                     Id = user.Id,
                     UserName = user.UserName,
-                    UserRole = userRole is null ? "student" : userRole,
+                    UserRole = userRole is null ? "employee" : userRole,
                     Token = encodedJwt
                 };
 

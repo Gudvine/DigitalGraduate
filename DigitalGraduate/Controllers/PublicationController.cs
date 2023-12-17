@@ -1,4 +1,5 @@
 ﻿using DigitalGraduate.Data.DAL;
+using DigitalGraduate.Data.DAL.EntranceTest;
 using DigitalGraduate.Data.DAL.File;
 using DigitalGraduate.Data.DAL.Publication;
 using DigitalGraduate.Data.Models.DTO.Publication;
@@ -69,11 +70,23 @@ namespace DigitalGraduate.Controllers
         }
 
         [HttpPost("/updatePublication")]
-        public async Task<Publication> UpdatePublication(PublicationModel model)
+        public async Task<IActionResult> UpdatePublication(PublicationModel model)
         {
-            //_publicationRepository.Update();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return new();
+            Publication newPublication = new()
+            {
+                Title = model.Title,
+                Adviser = model.Consultant,
+                Edition = model.Edition,
+                PublicationType = model.PublicationType,
+                PublishYear = model.Year,
+            };
+
+            await _publicationRepository.Update(newPublication);
+
+            return Ok(model);
         }
     }
 }

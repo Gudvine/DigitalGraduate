@@ -69,6 +69,7 @@ namespace DigitalGraduate.Controllers
 
             Certification newCertification = new()
             {
+                Id = certification.Id,
                 Semester = certification.Semester,
                 Result = certification.Result,
                 UserId = certification.UserId

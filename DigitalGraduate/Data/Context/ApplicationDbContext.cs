@@ -1,5 +1,6 @@
 ﻿using DigitalGraduate.Data.DAL.CertificateApplication;
 using DigitalGraduate.Data.DAL.Certification;
+using DigitalGraduate.Data.DAL.Dissertation;
 using DigitalGraduate.Data.DAL.EntranceTest;
 using DigitalGraduate.Data.DAL.File;
 using DigitalGraduate.Data.DAL.Grant;
@@ -30,6 +31,7 @@ namespace DigitalGraduate.Data.Context
         public virtual DbSet<Patent> Patents { get; set; }
         public virtual DbSet<ScientificCompetition> ScientificCompetitions { get; set; }
         public virtual DbSet<ScientificConference> ScientificConferences { get; set; }
+        public virtual DbSet<Dissertation> Dissertations { get; set; }
 
         // --------
         public virtual DbSet<TrainingArea> TrainingAreas { get; set; }

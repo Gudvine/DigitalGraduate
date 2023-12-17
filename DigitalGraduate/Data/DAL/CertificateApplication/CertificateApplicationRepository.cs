@@ -67,9 +67,9 @@ public class CertificateApplicationRepository : IRepository<CertificateApplicati
         if (result is null)
             return null;
 
-        result.ProvideTo = item.ProvideTo;
-        result.WithOfficialSeal = item.WithOfficialSeal;
-        result.StudentId = item.StudentId;
+        result.SpaceRequirement = item.SpaceRequirement;
+        result.NeedOfficialSeal = item.NeedOfficialSeal;
+        result.UserId = item.UserId;
         result.Count = item.Count;
 
         await _dbContext.SaveChangesAsync();

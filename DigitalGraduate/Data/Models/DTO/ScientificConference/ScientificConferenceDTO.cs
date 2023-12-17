@@ -1,9 +1,9 @@
-﻿namespace DigitalGraduate.Data.DAL.ScientificConference;
+﻿namespace DigitalGraduate.Data.Models.DTO.ScientificConference;
 
 /// <summary>
-/// Представляет научную конференцию
+/// Представляет DTO научногой конференции
 /// </summary>
-public class ScientificConference
+public class ScientificConferenceDTO
 {
     /// <summary>
     /// Id научной конференции
@@ -20,15 +20,15 @@ public class ScientificConference
     /// <summary>
     /// Масштаб
     /// </summary>
-    public string Scale { get; set; } = string.Empty;
+    public string Level { get; set; } = string.Empty;
     /// <summary>
     /// Вид участия
     /// </summary>
-    public string Participation {  get; set; } = string.Empty;
+    public string ParticipationOption { get; set; } = string.Empty;
     /// <summary>
     /// Победитель
     /// </summary>
-    public bool IsWinner { get; set; }
+    public bool IsWin { get; set; }
     /// <summary>
     /// Id пользователя, участника конференции
     /// </summary>

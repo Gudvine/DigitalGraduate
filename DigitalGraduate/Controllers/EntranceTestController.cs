@@ -1,8 +1,6 @@
-﻿using DigitalGraduate.Data.DAL;
-using DigitalGraduate.Data.DAL.EntranceTest;
-using DigitalGraduate.Data.DAL.Student;
+﻿using DigitalGraduate.Data.DAL.EntranceTest;
+using DigitalGraduate.Data.DAL;
 using DigitalGraduate.Data.Models.DTO.EntranceTest;
-using DigitalGraduate.Data.Models.DTO.Profile.Student;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigitalGraduate.Controllers
@@ -11,17 +9,17 @@ namespace DigitalGraduate.Controllers
     [Route("[controller]")]
     public class EntranceTestController : ControllerBase
     {
-        private readonly IRepository<EntranceTest> _repostiory; 
+        private readonly IRepository<EntranceTest> _repository;
 
         public EntranceTestController(IRepository<EntranceTest> repostiory)
-            => _repostiory = repostiory;
+            => _repository = repostiory;
 
         [HttpGet("/entranceTests/{id}")]
         public async Task<IActionResult> GetEntranceTests(string id)
         {
             List<EntranceTestDTO> entranceTestsDtos = new();
 
-            var entranceTests = (await _repostiory.GetAll()).Where(x => x.UserId == id);
+            var entranceTests = (await _repository.GetAll()).Where(x => x.UserId == id);
 
             foreach (var entranceTest in entranceTests)
             {
@@ -41,7 +39,7 @@ namespace DigitalGraduate.Controllers
 
         [HttpGet("/entanceTests/all")]
         public async Task<IActionResult> GetAllEntranceTests()
-            => Ok(await _repostiory.GetAll());
+            => Ok(await _repository.GetAll());
 
         [HttpPost("/entranceTests/create")]
         public async Task<IActionResult> CreateEntranceTest(EntranceTestDTO entranceTest)
@@ -51,19 +49,20 @@ namespace DigitalGraduate.Controllers
 
             EntranceTest newEntranceTest = new()
             {
+                Id = entranceTest.Id,
                 Title = entranceTest.Title,
                 Grade = entranceTest.Grade,
                 UserId = entranceTest.UserId
             };
 
-            var result = await _repostiory.Create(newEntranceTest);
+            var result = await _repository.Create(newEntranceTest);
 
             entranceTest.Id = result.Id;
 
             return Ok(entranceTest);
         }
 
-        [HttpPost("/editEntranceTest/{id}")]
+        [HttpPost("/editEntranceTest")]
         public async Task<IActionResult> EditEntranceTest(EntranceTestDTO entranceTest)
         {
             if (!ModelState.IsValid)
@@ -71,12 +70,13 @@ namespace DigitalGraduate.Controllers
 
             EntranceTest newEntranceTest = new()
             {
+                Id = entranceTest.Id,
                 Title = entranceTest.Title,
                 Grade = entranceTest.Grade,
                 UserId = entranceTest.UserId
             };
 
-            await _repostiory.Update(newEntranceTest);
+            await _repository.Update(newEntranceTest);
 
             return Ok(entranceTest);
         }
@@ -84,9 +84,9 @@ namespace DigitalGraduate.Controllers
         [HttpPost("/deleteEntranceTest/{id}")]
         public async Task<IActionResult> DeleteEntranceTest(int id)
         {
-            await _repostiory.Delete(id);
+            await _repository.Delete(id);
 
-            var deletedEntranceTest = _repostiory.GetById(id);
+            var deletedEntranceTest = _repository.GetById(id);
 
             if (deletedEntranceTest is null)
                 return NotFound();

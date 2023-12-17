@@ -3,6 +3,7 @@ using System;
 using DigitalGraduate.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DigitalGraduate.Data.Migrations.ApplicationDbContextMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231217095310_AddedDissertation")]
+    partial class AddedDissertation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,15 +36,15 @@ namespace DigitalGraduate.Data.Migrations.ApplicationDbContextMigrations
                     b.Property<int>("Count")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("NeedOfficialSeal")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("SpaceRequirement")
+                    b.Property<string>("ProvideTo")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("StudentId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("WithOfficialSeal")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 

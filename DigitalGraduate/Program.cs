@@ -2,6 +2,7 @@ using DigitalGraduate.Data.Context;
 using DigitalGraduate.Data.DAL;
 using DigitalGraduate.Data.DAL.CertificateApplication;
 using DigitalGraduate.Data.DAL.Certification;
+using DigitalGraduate.Data.DAL.Dissertation;
 using DigitalGraduate.Data.DAL.EntranceTest;
 using DigitalGraduate.Data.DAL.File;
 using DigitalGraduate.Data.DAL.Grant;
@@ -131,6 +132,7 @@ builder.Services.AddScoped<IRepository<Grant>, GrantRepository>();
 builder.Services.AddScoped<IRepository<ScientificCompetition>, ScientificCompetitionRepository>();
 builder.Services.AddScoped<IRepository<ScientificConference>, ScientificConferenceRepository>();
 builder.Services.AddScoped<IRepository<Certification>, CertificationRepository>();
+builder.Services.AddScoped<IRepository<Dissertation>, DissertationRepository>();
 
 var app = builder.Build();
 

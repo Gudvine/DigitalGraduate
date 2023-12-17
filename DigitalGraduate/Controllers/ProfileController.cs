@@ -46,7 +46,16 @@ namespace DigitalGraduate.Controllers
         }
 
         [HttpGet("/student/all")]
-        public async Task<IActionResult> GetAllSudentsProfiles()
+        public async Task<IActionResult> GetAllStudentsProfiles()
+            => Ok(await _studentRepository.GetAll());
+        [HttpGet("/aspirants")]
+        public async Task<IActionResult> GetAllAspirantsProfiles()
+            => Ok(await _studentRepository.GetAll());
+        [HttpGet("/applicants")]
+        public async Task<IActionResult> GetAllApplicantsProfiles()
+            => Ok(await _studentRepository.GetAll());
+        [HttpGet("/doctorants")]
+        public async Task<IActionResult> GetAllDoctorantsProfiles()
             => Ok(await _studentRepository.GetAll());
 
         [HttpPost("/student/create")]
@@ -87,6 +96,7 @@ namespace DigitalGraduate.Controllers
 
             Student newStudent = new()
             {
+                Id = student.Id,
                 Name = student.Name,
                 LastName = student.LastName,
                 BirthDate = student.BirthDate,
