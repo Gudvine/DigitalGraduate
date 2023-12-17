@@ -4,7 +4,7 @@ networks:
     driver: bridge
 services:
   app: 
-    container_name: deploy-guide
+    container_name: digitalgraduate
     build:
       context: .
       dockerfile: Dockerfile
@@ -19,12 +19,12 @@ services:
     image: postgres:latest
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: deploy-guide
+      POSTGRES_PASSWORD: 260401
+      POSTGRES_DB: dbfortests
     ports:
       - "5432:5432"
     networks:
-      - deploy-guide-dev
+      - digitalgraduate-dev
     volumes:
       - postgres-data:/var/lib/postgresql/data
 volumes:
