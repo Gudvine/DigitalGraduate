@@ -22,7 +22,7 @@ services:
       POSTGRES_PASSWORD: 260401
       POSTGRES_DB: dbfortests
     ports:
-      - "5432:5432"
+      - "postgres:postgres"
     networks:
       - digitalgraduate-dev
     volumes:
