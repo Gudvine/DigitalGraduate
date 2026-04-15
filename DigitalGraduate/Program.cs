@@ -152,6 +152,12 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
+using (var scope1 = app.Services.CreateScope())
+{
+    var identityDbContext = scope1.ServiceProvider.GetRequiredService<IdentityDbContext>();
+    identityDbContext.Database.Migrate();
+}
+
 //app.UseHttpsRedirection();
 
 app.UseCors("CorsForTests");
